@@ -1,0 +1,134 @@
+\documentclass[a4paper,11pt]{article}
+\usepackage[latin1]{inputenc}
+\usepackage{lmodern}
+\usepackage[T1]{fontenc}
+\usepackage[babel=true]{microtype}
+\usepackage[portuguese]{babel}
+\usepackage[pdftex]{hyperref}
+\usepackage{graphicx}
+\usepackage{eurosym}
+\usepackage{scrextend}
+\usepackage{hyphenat}
+
+\begin{document}
+
+\begin{titlepage}
+\title{\huge \textbf{Pesquisa aplicada � determina��o de trajetos em viagens\\[1cm] \Large Relat�rio intercalar\\[1cm] \includegraphics{logo.png}\\[1cm] \large Intelig�ncia Artificial\\[0.25cm] \small $3^o$ ano\\[0.05cm]Mestrado Integrado em Engenharia Inform�tica e Computa��o\\[1.7cm]}\normalsize Turma 5 - Grupo A1\_2}
+
+\author{José Peixoto \\Pedro Moura \and 200603103\\201306843 \and
+ei12134@fe.up.pt \\ up201306843@fe.up.pt\\[1cm]}
+\maketitle
+\thispagestyle{empty} % titlepage must not be numbered
+\end{titlepage}
+
+\newpage
+\tableofcontents
+\newpage
+
+\begin{abstract}
+No âmbito da unidade curricular de Intelig�ncia Artificial, foi-nos proposta a
+elabora��o de um relatório intercalar que descrevesse as decis�es e progressos
+j� efectuados no projecto da pesquisa aplicada � determina��o de trajetos em viagens.
+\end{abstract}
+
+\section{Objetivo}
+\iffalse Descri��o sum�ria do objetivo do trabalho \fi
+No tema da ``Pesquisa aplicada � determina��o de trajetos em viagens'' pretende-se determinar o melhor percurso a realizar de autom�vel, numa viagem de grande dist�ncia. Pressup�e-se uma aplica��o de algoritmos de pesquisa informada estudados nas aulas, que permitam encontrar a solu��o �ptima deste problema.
+
+\section{Descri��o}
+\subsection{Especifica��o}
+\iffalse Descri��o pormenorizada do trabalho.
+Indique as partes em que tenciona dividir o trabalho e as fases em que tenciona abordar cada parte.
+Caso j� tenha pensado, indique nesta sec��o mais pormenores sobre o trabalho incluindo m�dulos da arquitetura que vai propor, esquemas de Representa��o de Conhecimento que vai usar, processos de racioc�nio que tenciona utilizar, metodologias que vai propor/usar, etc.\fi
+
+\subsubsection{Principais conceitos}
+Neste problema, os principais conceitos s�o o autom�vel, o local de partida, o local de destino, esta��es de servi�o, hot�is, pontos com interesse tur�stico e o trajeto ou estrada que faz a liga��o entre os locais.
+
+\begin{labeling}{alligator}
+\item [\textbf{Autom�vel}] � o meio de transporte usado pela fam�lia do Sr. X e permitir� a desloca��o entre o local de partida e o local de destino, atrav�s de estradas, podendo passar por esta��es servi�o, pontos com interesse para visita e hot�is.
+\item [\textbf{Local de partida}] � a localiza��o f�sica da qual a fam�lia do Sr. X iniciar� a sua viagem de f�rias.
+\item [\textbf{Local de destino}] � a localiza��o final � qual a fam�lia do Sr. X pertende chegar na sua viagem de f�rias.
+\item [\textbf{Esta��es de servi�o}] s�o locais que permitem o abastecimento de combust�vel ao autom�vel.
+\item [\textbf{Hot�is}] s�o locais que permitem a pernoita de toda a fam�lia do Sr. X.
+\item [\textbf{Pontos com interesse tur�stico}] s�o os locais com interesse tur�stico, e de passagem obrigat�ria pela fam�lia do Sr. X durante as f�rias.
+\item [\textbf{Estradas}] s�o todas as vias de comunica��o que permitem que o autom�vel se desloque entre os pontos atr�s referidos. No caso de ser uma autoestrada, considera-se que a via tem custos associados.
+\end{labeling}
+
+\subsubsection{Descri��o do problema}
+Com os conceitos atr�s descritos, torna-se simples a compreens�o de uma descri��o geral do problema: Um autom�vel pretende deslocar-se de um ponto A para um ponto B, sendo necess�rio descobrir o caminho mais curto e fisicamente poss�vel (ver sub-sec��o seguinte), minimizando os custos associados.
+
+\subsubsection{Restri��es do problema}
+Para al�m de determinar a melhor solu��o, ou seja, o melhor trajeto a realizar pelo autom�vel, � necess�rio ter em conta certas restri��es que alteram a busca da solu��o e simulam de forma mais realista o problema:
+
+\begin{labeling}{alligator}
+\item [\textbf{Tempo m�ximo de condu��o:}] a dist�ncia pode n�o ser percorr�vel em 24 horas e muito menos nas 8 horas que se definiram como tempo m�ximo de viagem por dia.
+\item [\textbf{Controlo da quantidade de combust�vel:}] a quantidade de combust�vel tem de ser mantida por forma a permitir o movimento do autom�vel sem que este se esgote antes de alcan�ar uma esta��o de servi�o ou o ponto de destino, caso j� tenha percorrido todos os pontos com interesse tur�stico.
+\item [\textbf{Passagem pelos pontos com interesse tur�stico:}] outra restri��o na escolha do itiner�rio final � a passagem obrigat�ria pelos pontos com interesse tur�stico.
+\item [\textbf{Custos associados:}] minimiza��o dos custos necess�rios no itiner�rio solu��o. Prefer�ncia por estradas sem custos adicionais, e minimiza��o de pernoitas, ou utiliza��o de hot�is mais baratos.
+\end{labeling}
+
+\subsubsection{Representa��o do problema}
+Para representar o mapa � usado um grafo n�o dirigido com uma lista de arestas adjacentes em cada n�. Para simplifica��o na cria��o de dados de entrada, cada n� representa uma cidade que pode ou n�o ser um local obrigat�rio de passagem e cont�m ou n�o esta��es de servi�o e/ou hot�is. As coordenadas geogr�ficas de cada n� s�o representadas em graus decimais. As arestas do grafo guardam a dist�ncia, o tempo m�dio necess�rio para o percorrer e o seu pre�o ( 0 \euro \ quando sem custos e $>$ 0 \euro \ , caso se trate de uma via de comunica��o com custos de passagem).
+
+Na representa��o do carro, para al�m da informa��o relativa � capacidade do tanque de combust�vel e autonomia m�dia, guarda-se o plano de viagem pretendido, com os n�s de passagem obrigat�ria, sob a forma de uma lista ligada em que o primeiro elemento � o ponto de partida, e o �ltimo o ponto de chegada.
+
+\subsubsection{Solu��o do problema}
+Na determina��o da melhor solu��o para o problema, pretende-se aplicar o algoritmo $A^*$ a um grafo que representa um mapa com alguns dos itiner�rios poss�veis desde o local de partida at� ao local de destino. Este algoritmo usa um m�todo de ``o melhor primeiro'', fazendo uma avalia��o $f(n)$ dos n�s, combinando o custo necess�rio para se atingir o n� $g(n)$ e o custo necess�rio para se alcan�ar o objetivo desse n� $h(n)$:
+
+\begin{equation}
+f(n) = g(n) + h(n)
+\end{equation}
+
+No c�lculo da fun��o $g(n)$, pensa-se contabilizar a dist�ncia em quil�metros ($km$) j� percorridos at� ao n� em quest�o e o dinheiro gasto em euros (\euro) em combust�vel, alojamento e portagens.
+
+Para garantir a admissibilidade da fun��o heur�stica $h(n)$, pensa-se calcular a dist�ncia em linha reta entre as coordenadas geogr�ficas entre o n� em quest�o e o local de destino, apenas no caso em que todos os locais com interesse tur�stico ($POI$) j� tenham sido visitados.
+Quando ainda existam $POI$ por visitar, � calculada a dist�ncia de Manhattan para o caminho entre o ponto atual, passando por todos os pontos ainda por visitar at� ao local de destino, adicionando tamb�m uma estimativa do custo em combust�vel, alojamento e portagens necess�rios para esse trajeto.
+
+\subsubsection{Fases do trabalho}
+\begin{enumerate}
+\item Compreens�o do problema.
+\item An�lise e escolha das metodologias de resolu��o do problema, recorrendo a algoritmos de pesquisa informada de solu��es.
+\item Cria��o/gera��o e representa��o dos dados de entrada.
+\item Aplica��o de algoritmos ($A^*$ e/ou $IDA^*$).
+\item Valida��o dos resultados.
+\item Visualiza��o da solu��o de uma forma amig�vel, se poss�vel, usando Google Maps JavaScript API e/ou GraphStream.
+\end{enumerate}
+
+\subsection{Trabalho efectuado}
+\iffalse Descri��o do trabalho que j� realizou.\fi
+Geraram-se n�s e arestas a partir de coordenadas obtidas pelo Google Maps, necess�rios na cria��o de um mapa com v�rias liga��es (estradas) poss�veis entre cada par de n�s. Pela morosidade de todo este processo, optou-se nesta primeira entrega pela representa��o de hot�is, esta��es de servi�o e pontos com interesse tur�stico de forma agrupada nos n�s das cidades.
+
+Calculou-se a melhor solu��o para o problema, apenas contabilizando a dist�ncia como fator de c�lculo tanto para a fun��o de custo at� ao n� $g(n)$ como para a fun��o heur�stica $h(n)$. � feita uma representa��o gr�fica b�sica do mapa inicial e da solu��o gerada pelo programa.
+
+\subsection{Resultados esperados e forma de avalia��o}
+\iffalse Enumere testes a definir para validar o resultado do trabalho.\fi
+Para al�m de testes unit�rios \texttt{JUnit} para fun��es cr�ticas usadas pelo algoritmo, como por exemplo no c�lculo da dist�ncia de Manhattan entre dois pontos do mapa, � feita a compara��o do resultado do programa com uma resolu��o manual do problema, uma vez que nesta fase inicial, ainda � de dimens�o reduzida. Para a entrega final, pensa-se ter todos os componentes importantes acrescentando tamb�m ao algoritmo principal testes unit�rios \texttt{JUnit}.
+
+\section{Conclus�es}
+\iffalse Escreva aqui as conclus�es que achar devidas.\fi
+� oportuna a explora��o pr�tica de alguns dos algoritmos de pesquisa de solu��es leccionados durante as aulas, no entanto, devido � sobrecarga de trabalho de outras unidades curriculares e � dificuldade que sentimos, sobretudo ao preparar os dados de input com a escala e formato pretendido, consideramos insuficiente o tempo �til dispon�vel para o trabalho.
+
+\section{Recursos}
+\iffalse Indique os recursos usados na realiza��o do trabalho: bibliografia e software.\fi
+
+\begin{thebibliography}{9}
+
+\bibitem{lamport93}
+  Stuart Russell, Peter Norvig
+  \emph{Artifical Intelligence A Modern Approach},
+  Pearson Education
+  3rd edition,
+  2010.
+
+\bibitem{lamport93}
+  \emph{Google Maps},
+  2016
+
+\bibitem{lamport93}
+  http://graphstream-project.org/
+  \emph{GraphStream},
+  2015
+
+\end{thebibliography}
+
+\end{document}
