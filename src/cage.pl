@@ -1,8 +1,8 @@
 % includes
 :- use_module(library(random)).
 :- use_module(library(system)).
-:- include('board.pl').
 :- include('logic.pl').
+:- include('board.pl').
 
 % program starting point
 %cage :- main_menu.

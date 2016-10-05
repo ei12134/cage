@@ -7,7 +7,7 @@ board([[blue,red,blue,red,blue,red,blue,red],
        [red,blue,red,blue,red,blue,red,blue],
        [blue,red,blue,red,blue,red,blue,red],
        [red,blue,red,blue,red,blue,red,blue]
-       ]).
+      ]).
 
 % display board
 display_board([H|T]) :- 
@@ -21,9 +21,6 @@ display_board([H|T]) :-
 display_board([]):-
         write('   ----------------------------------------------------------------- '), nl.
 
-
-% display_line([]):- write('      '), nl.
-
 % display line
 display_line([H|T]) :-
         symbol(H,S),
@@ -34,11 +31,13 @@ display_line([]) :-
 
 %display empty line
 display_empty_line([]):-
-        write('   '),
-        write('|'), write('       '), write('|'), write('       '), write('|'), write('       '), write('|'),
-        write('       '), write('|'), write('       '), write('|'), write('       '), write('|'), 
-        write('       '), write('|'), write('       '), write('|'), nl.
-        
+        write('   '), write('|'),write('       '),
+        write('|'), write('       '), write('|'),
+        write('       '), write('|'), write('       '),
+        write('|'), write('       '), write('|'), write('       '),
+        write('|'), write('       '), write('|'), write('       '),
+        write('|'), nl.
+
 % symbols
 symbol(red,'r').
 symbol(blue,'b').

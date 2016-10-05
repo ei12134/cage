@@ -1,4 +1,4 @@
-\documentclass[a4paper,11pt]{article}
+\documentclass[a4paper,11pt,titlepage]{article}
 \usepackage[utf8]{inputenc}
 \usepackage{lmodern}
 \usepackage[T1]{fontenc}
@@ -13,21 +13,16 @@
 \usepackage{hyperref}
 \usepackage{float}
 
-\begin{document}
-
-\hypersetup{pageanchor=false}
-\begin{titlepage}
-\title{\huge \textbf{Cage\\[1cm] \Large Relatório intercalar\\[1cm]
-\includegraphics{res/logo.png}\\[1cm] \large Programação em
+\title{\huge \textbf{Cage\\[1cm] \Large Relatório intercalar\\[0.7cm]
+\includegraphics{res/logo.png}\\[0.7cm] \large Programação em
 Lógica\\[0.25cm] \small $3^o$ ano\\[0.05cm]Mestrado Integrado em Engenharia Informática e
-Computação\\[1.7cm]}\normalsize Turma 4 - Grupo Cage\_2}
+Computação\\[1cm]}\normalsize Turma 4 - Grupo Cage\_2}
 
 \author{José Peixoto \\Luís Cruz \and 200603103\\201303248 \and ei12134@fe.up.pt
-\\ up201303248@fe.up.pt\\[1cm]}
+\\ up201303248@fe.up.pt}
+
+\begin{document}
 \maketitle
-\pagestyle{empty} % titlepage must not be numbered
-\end{titlepage}
-\hypersetup{pageanchor=true}
 
 \section{Descrição do jogo}
 O Cage é um jogo de estratégia em tabuleiro parecido com as damas que foi inventado por Mark Steere em maio de 2010. O autor descreve-o como um jogo para dois jogadores sem qualquer informação oculta. É abstracto e sem factor sorte, sem empates e sem temas. É jogado num tabuleiro de damas 10x10 ou 8x8 e ao contrário do jogo original das damas, no início todo tabuleiro está preenchido com peças promovidas ``damas''. ``Jogo de aniquilação de alta energia'' é a frase escolhida pelo autor para caricaturizar o jogo, uma vez que o movimento para o centro do tabuleiro assegura a aniquilação de pelo menos uma das cores.
@@ -37,7 +32,7 @@ O Cage é jogado por dois jogadores num tabuleiro de damas com 50 damas vermelha
 
 \begin{figure}[H]
     \center
-    \includegraphics[scale=0.7]{res/1-initial-setup.jpg}
+    \includegraphics[scale=0.6]{res/1-initial-setup.jpg}
     \caption{Estado inicial do tabuleiro}
     \label{fig:1-initial-setup.png}
 \end{figure}
@@ -50,7 +45,7 @@ Existem quatro tipos de movimentos:
 \begin{enumerate}
   \item Restrito
   \item Centralizador
-  \item Adjunto
+  \item Adjacente
   \item Salto
 \end{enumerate}
 Durante um turno, um jogador apenas pode utilizar um tipo de movimento.
@@ -58,32 +53,12 @@ Durante um turno, um jogador apenas pode utilizar um tipo de movimento.
 \paragraph{Restrição 1}
 Nunca se pode colocar uma dama ortogonalmente (horizontal ou verticalmente) adjacente a uma dama de cor idêntica. Nem de forma transitória durante um turno de vários movimentos.
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[scale=0.5]{res/2-restriction-1.jpg}
-    \caption{1ª restrição}
-    \label{fig:2-restriction-1.jpg}
-\end{figure}
-
 \paragraph{Restrição 2}
 Nunca se pode movimentar uma dama que tenha adjacências ortogonais com damas inimigas para uma casa onde tal não aconteça.
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[scale=0.4]{res/2-restriction-2.jpg}
-    \caption{2ª restrição}
-    \label{fig:2-restriction-2.jpg}
-\end{figure}
 
 \paragraph{Centralizador}
 Este movimento de uma casa, permite à dama deslocar-se na horizontal, vertical ou diagonal para uma casa vazia e que permite que a dama se aproxime do centro do tabuleiro.
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[scale=0.4]{res/3-centering.jpg}
-    \caption{Movimento centralizador}
-    \label{fig:3-centering.jpg}
-\end{figure}
 
 \paragraph{Adjacente}
 Uma dama que nao tenha adjacencias ortogonais com damas inimigas pode-se mover uma casa em qualquer direção que  contenha adjacencias ortogonais com uma ou mais damas inimigas.
@@ -91,22 +66,118 @@ Uma dama que nao tenha adjacencias ortogonais com damas inimigas pode-se mover u
 \paragraph{Salto}
 O movimento de salto permite capturar uma dama inimiga, movimentando a dama do jogador de uma casa ortogonalmente adjacente de um lado da dama inimiga para a casa vazia adjacente do lado oposto. É possivel capturar uma dama enimiga nas casas periféricas do tabuleiro de uma casa adjacente e do lado oposto da dama inimiga na borda do tabuleiro. O resultado é que quer a dama capturada quer a dama que captura são removidas do tabuleiro neste tipo de captura para fora dos limites do tabuleiro.
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[scale=0.55]{res/5-jump.jpg}
-    \caption{Salto}
-    \label{fig:5-jump.jpg}
-\end{figure}
-
 \section{Representação do estado do jogo}
-\iffalse (tipicamente uma lista de listas que incluem diferentes átomos para
-as peças), com exemplificação em Prolog de estados iniciais, intermédios e finais do jogo, acompanhados de imagens ilustrativas \fi
+\iffalse (tipicamente uma lista de listas que incluem diferentes átomos para as peças), com exemplificação em Prolog de estados iniciais, intermédios e finais do jogo, acompanhados de imagens ilustrativas \fi
+Na representação de jogo usar-se-ão listas de listas que incluem so 
+atoms para as diferentes peças ($red$ e $blue$) e a casa vazia ($empty$).
 \subsection{Representação do estado inicial do tabuleiro:}
 \begin{verbatim}
+[[blue,red,blue,red,blue,red,blue,red],
+ [red,blue,red,blue,red,blue,red,blue],
+ [blue,red,blue,red,blue,red,blue,red],
+ [red,blue,red,blue,red,blue,red,blue],
+ [blue,red,blue,red,blue,red,blue,red],
+ [red,blue,red,blue,red,blue,red,blue],
+ [blue,red,blue,red,blue,red,blue,red],
+ [red,blue,red,blue,red,blue,red,blue]
+]).
 \end{verbatim}
+
+\begin{figure}[H]
+    \center
+    \includegraphics[scale=0.45]{res/7-initial-state.png}
+    \caption{Estado inicial do jogo}
+    \label{fig:7-initial-state.png}
+\end{figure}
+
+\subsection{Representação de um estado intermédio do tabuleiro:}
+\begin{verbatim}
+[[empty,empty,empty,empty,empty,empty,empty,empty],
+ [empty,empty,empty,empty,empty,empty,empty,empty],
+ [empty,empty,empty,empty,empty,empty,empty,empty],
+ [empty,red,blue,empty,empty,empty,empty,empty],
+ [red,empty,empty,empty,empty,empty,empty,empty],
+ [empty,blue,empty,empty,empty,empty,empty,empty],
+ [empty,empty,empty,empty,empty,empty,empty,empty],
+ [empty,empty,empty,empty,empty,empty,empty,empty]
+]).
+\end{verbatim}
+
+\begin{figure}[H]
+    \center
+    \includegraphics[scale=0.45]{res/8-intermediate-state.png}
+    \caption{Estado intermédio de um jogo}
+    \label{fig:8-intermediate-state.png}
+\end{figure}
+
+\subsection{Representação de um possível estado final do tabuleiro:}
+\begin{verbatim}
+[[empty,empty,empty,empty,empty,empty,empty,empty],
+ [empty,empty,empty,empty,empty,empty,empty,empty],
+ [empty,empty,empty,empty,empty,empty,empty,empty],
+ [empty,empty,empty,empty,empty,empty,empty,empty],
+ [empty,empty,empty,empty,empty,empty,empty,empty],
+ [empty,empty,empty,empty,empty,empty,empty,empty],
+ [empty,empty,empty,empty,empty,empty,empty,empty],
+ [empty,empty,empty,empty,empty,empty,empty,empty]
+]).
+\end{verbatim}
+
+\begin{figure}[H]
+    \center
+    \includegraphics[scale=0.45]{res/9-final-state.png}
+    \caption{Estado final de um jogo}
+    \label{fig:9-final-state.png}
+\end{figure}
 
 \section{Visualização do tabuleiro em modo de texto}
 \iffalse (tipicamente uma lista de listas que incluem diferentes átomos para as peças), com exemplificação em Prolog de estados iniciais, intermédios e finais do jogo, acompanhados de imagens ilustrativas \fi
+\begin{verbatim}
+% container
+board([[blue,red,blue,red,blue,red,blue,red],
+       [red,blue,red,blue,red,blue,red,blue],
+       [blue,red,blue,red,blue,red,blue,red],
+       [red,blue,red,blue,red,blue,red,blue],
+       [blue,red,blue,red,blue,red,blue,red],
+       [red,blue,red,blue,red,blue,red,blue],
+       [blue,red,blue,red,blue,red,blue,red],
+       [red,blue,red,blue,red,blue,red,blue]
+      ]).
+
+% display board
+display_board([H|T]) :- 
+        % how to display 1st line border?
+        write('   -------------------------------------------- '), nl,
+        display_empty_line([]),
+        display_line(H), nl,
+        display_empty_line([]),
+        display_board(T).
+
+display_board([]):-
+        write('   -------------------------------------------- '), nl.
+
+% display line
+display_line([H|T]) :-
+        symbol(H,S),
+        write('   |   '), write(S), 
+        display_line(T).
+display_line([]) :-
+        write('   |   ').
+
+%display empty line
+display_empty_line([]):-
+        write('   '), write('|'),write('       '),
+        write('|'), write('       '), write('|'),
+        write('       '), write('|'), write('       '),
+        write('|'), write('       '), write('|'), write('       '),
+        write('|'), write('       '), write('|'), write('       '),
+        write('|'), nl.
+
+% symbols
+symbol(red,'r').
+symbol(blue,'b').
+symbol(empty,' ').
+\end{verbatim}
 
 \section{Movimentos}
 \iffalse (tipos de jogadas) possíveis, definindo os cabeçalhos dos predicados que serão depois implementados. \fi
@@ -116,6 +187,12 @@ Restrições aos predicados dos movimentos declarados a seguir. Presume-se que a
 \begin{verbatim}
 restriction_1(row,col,adj_row,adj_col,boad).
 restriction_2(row,col,adj_row,adj_col,board).
+\end{verbatim}
+
+\subsection{Centralizador}
+Cabeçalho do predicado do movimento que centraliza a dama ao centro do tabuleiro.
+\begin{verbatim}
+centering_move(row,col,dest_row,dest_col,board).
 \end{verbatim}
 
 \subsection{Adjacente}
@@ -130,11 +207,6 @@ Cabeçalho do predicado do movimento em salto que permite capturar damas inimiga
 jump(row,col,dest_row,dest_col,board).
 \end{verbatim}
 
-\subsection{Centralizador}
-Cabeçalho do predicado do movimento que centraliza a dama ao centro do tabuleiro.
-\begin{verbatim}
-centering_move(row,col,dest_row,dest_col,board).
-\end{verbatim}
 
 \begin{thebibliography}{9}
 \bibitem{lamport93}
