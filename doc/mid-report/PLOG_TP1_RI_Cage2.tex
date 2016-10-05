@@ -10,36 +10,131 @@
 \usepackage{scrextend}
 \usepackage{hyphenat}
 \usepackage{url}
+\usepackage{hyperref}
+\usepackage{float}
 
 \begin{document}
 
+\hypersetup{pageanchor=false}
 \begin{titlepage}
 \title{\huge \textbf{Cage\\[1cm] \Large Relatório intercalar\\[1cm]
-\includegraphics[width=50mm,scale=0.5]{logo.png}\\[1cm] \large Programação em
+\includegraphics{res/logo.png}\\[1cm] \large Programação em
 Lógica\\[0.25cm] \small $3^o$ ano\\[0.05cm]Mestrado Integrado em Engenharia Informática e
 Computação\\[1.7cm]}\normalsize Turma 4 - Grupo Cage\_2}
-%### 
-\author{Jose Peixoto \\Luís Cruz \and 200603103\\201303248 \and ei12134@fe.up.pt
+
+\author{José Peixoto \\Luís Cruz \and 200603103\\201303248 \and ei12134@fe.up.pt
 \\ up201303248@fe.up.pt\\[1cm]}
 \maketitle
 \pagestyle{empty} % titlepage must not be numbered
 \end{titlepage}
+\hypersetup{pageanchor=true}
 
 \section{Descrição do jogo}
-\subsection{História}
+O Cage é um jogo de estratégia em tabuleiro parecido com as damas que foi inventado por Mark Steere em maio de 2010. O autor descreve-o como um jogo para dois jogadores sem qualquer informação oculta. É abstracto e sem factor sorte, sem empates e sem temas. É jogado num tabuleiro de damas 10x10 ou 8x8 e ao contrário do jogo original das damas, no início todo tabuleiro está preenchido com peças promovidas ``damas''. ``Jogo de aniquilação de alta energia'' é a frase escolhida pelo autor para caricaturizar o jogo, uma vez que o movimento para o centro do tabuleiro assegura a aniquilação de pelo menos uma das cores.
+
 \subsection{Regras}
+O Cage é jogado por dois jogadores num tabuleiro de damas com 50 damas vermelhas e 50 damas azuis na versão de tabuleiro 10x10 ou com 32 damas vermelhas e 32 damas azuis na versão de 8x8 tabuleiro. O tabuleiro é inicializado preenchendo todas as casas com damas de cor alternada.
+
+\begin{figure}[H]
+    \center
+    \includegraphics[scale=0.7]{res/1-initial-setup.jpg}
+    \caption{Estado inicial do tabuleiro}
+    \label{fig:1-initial-setup.png}
+\end{figure}
+
+\subsubsection{Objetivo}
+Para vencer é necessário capturar todas as damas inimigas. No final, pode ganhar-se mesmo que se perca a última peça que se está a movimentar (saltar) para capturar todas as damas últimas inimigas.
+
+\subsubsection{Movimentos}
+Existem quatro tipos de movimentos:
+\begin{enumerate}
+  \item Restrito
+  \item Centralizador
+  \item Adjunto
+  \item Salto
+\end{enumerate}
+Durante um turno, um jogador apenas pode utilizar um tipo de movimento.
+
+\paragraph{Restrição 1}
+Nunca se pode colocar uma dama ortogonalmente (horizontal ou verticalmente) adjacente a uma dama de cor idêntica. Nem de forma transitória durante um turno de vários movimentos.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.5]{res/2-restriction-1.jpg}
+    \caption{1ª restrição}
+    \label{fig:2-restriction-1.jpg}
+\end{figure}
+
+\paragraph{Restrição 2}
+Nunca se pode movimentar uma dama que tenha adjacências ortogonais com damas inimigas para uma casa onde tal não aconteça.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.4]{res/2-restriction-2.jpg}
+    \caption{2ª restrição}
+    \label{fig:2-restriction-2.jpg}
+\end{figure}
+
+\paragraph{Centralizador}
+Este movimento de uma casa, permite à dama deslocar-se na horizontal, vertical ou diagonal para uma casa vazia e que permite que a dama se aproxime do centro do tabuleiro.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.4]{res/3-centering.jpg}
+    \caption{Movimento centralizador}
+    \label{fig:3-centering.jpg}
+\end{figure}
+
+\paragraph{Adjacente}
+Uma dama que nao tenha adjacencias ortogonais com damas inimigas pode-se mover uma casa em qualquer direção que  contenha adjacencias ortogonais com uma ou mais damas inimigas.
+
+\paragraph{Salto}
+O movimento de salto permite capturar uma dama inimiga, movimentando a dama do jogador de uma casa ortogonalmente adjacente de um lado da dama inimiga para a casa vazia adjacente do lado oposto. É possivel capturar uma dama enimiga nas casas periféricas do tabuleiro de uma casa adjacente e do lado oposto da dama inimiga na borda do tabuleiro. O resultado é que quer a dama capturada quer a dama que captura são removidas do tabuleiro neste tipo de captura para fora dos limites do tabuleiro.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.55]{res/5-jump.jpg}
+    \caption{Salto}
+    \label{fig:5-jump.jpg}
+\end{figure}
 
 \section{Representação do estado do jogo}
-\iffalse (tipicamente uma lista de listas que incluem diferentes átomos para as
-peças), com exemplificação em Prolog de estados iniciais, intermédios e finais do jogo, acompanhados de imagens ilustrativas \fi
+\iffalse (tipicamente uma lista de listas que incluem diferentes átomos para
+as peças), com exemplificação em Prolog de estados iniciais, intermédios e finais do jogo, acompanhados de imagens ilustrativas \fi
+\subsection{Representação do estado inicial do tabuleiro:}
+\begin{verbatim}
+\end{verbatim}
 
 \section{Visualização do tabuleiro em modo de texto}
-\iffalse (tipicamente uma lista de listas que incluem diferentes átomos para as
-peças), com exemplificação em Prolog de estados iniciais, intermédios e finais do jogo, acompanhados de imagens ilustrativas \fi
+\iffalse (tipicamente uma lista de listas que incluem diferentes átomos para as peças), com exemplificação em Prolog de estados iniciais, intermédios e finais do jogo, acompanhados de imagens ilustrativas \fi
 
 \section{Movimentos}
-\iffalse (tipos de jogadas) possíveis, definindo os cabeçalhos dos predicados
-que serão depois implementados. \fi
+\iffalse (tipos de jogadas) possíveis, definindo os cabeçalhos dos predicados que serão depois implementados. \fi
+De uma forma geral, nos predicados dos movimentos a seguir apresentados é requerida a receção das linhas e colunas iniciais e finais da peça a mover e do tabuleiro.
+\subsection{Restrições}
+Restrições aos predicados dos movimentos declarados a seguir. Presume-se que a implementação dos outros predicados relativos aos restantes movimentos requerem a avaliação satisfatória das seguintes restrições.
+\begin{verbatim}
+restriction_1(row,col,adj_row,adj_col,boad).
+restriction_2(row,col,adj_row,adj_col,board).
+\end{verbatim}
+
+\subsection{Adjacente}
+Cabeçalho do predicado do movimento para uma casa adjacente.
+\begin{verbatim}
+adjoining_mode(row,col,dest_row,dest_col,board).
+\end{verbatim}
+
+\subsection{Salto}
+Cabeçalho do predicado do movimento em salto que permite capturar damas inimigas.
+\begin{verbatim}
+jump(row,col,dest_row,dest_col,board).
+\end{verbatim}
+
+\subsection{Centralizador}
+Cabeçalho do predicado do movimento que centraliza a dama ao centro do tabuleiro.
+\begin{verbatim}
+centering_move(row,col,dest_row,dest_col,board).
+\end{verbatim}
 
 \begin{thebibliography}{9}
 \bibitem{lamport93}
@@ -48,6 +143,10 @@ que serão depois implementados. \fi
   The MIT Press
   2nd edition,
   2000.
+  
+  \bibitem{bl}Abstract games,
+  \url{http://www.marksteeregames.com/MSG_abstract_games.html}, 14 10 2016.
+  
   \bibitem{bl}Cage rules,
   \url{http://www.marksteeregames.com/Cage_rules.html}, 14 10 2016.
 \end{thebibliography}
