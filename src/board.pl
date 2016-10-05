@@ -1,19 +1,19 @@
 % container
-board([[blue,red,blue,red,blue,red,blue,red,blue,red],
-       [blue,red,blue,red,blue,red,blue,red,blue,red],
-       [blue,red,blue,red,blue,red,blue,red,blue,red],
-       [blue,red,blue,red,blue,red,blue,red,blue,red],
-       [blue,red,blue,red,blue,red,blue,red,blue,red],
-       [blue,red,blue,red,blue,red,blue,red,blue,red],
-       [blue,red,blue,red,blue,red,blue,red,blue,red],
-       [blue,red,blue,red,blue,red,blue,red,blue,red],
-       [blue,red,blue,red,blue,red,blue,red,blue,red],
-       [blue,red,blue,red,blue,red,blue,red,blue,red]]).
+board([[blue,red,blue,red,blue,red,blue,red],
+       [red,blue,red,blue,red,blue,red,blue],
+       [blue,red,blue,red,blue,red,blue,red],
+       [red,blue,red,blue,red,blue,red,blue],
+       [blue,red,blue,red,blue,red,blue,red],
+       [red,blue,red,blue,red,blue,red,blue],
+       [blue,red,blue,red,blue,red,blue,red],
+       [red,blue,red,blue,red,blue,red,blue],
+       [blue,red,blue,red,blue,red,blue,red],
+       [red,blue,red,blue,red,blue,red,blue]]).
 
 % display board
 display_board([H|T]) :- 
         % how to display 1st line border?
-        display_line(H), nl, write(' ----------------------------------------- '), nl,
+        display_line(H), nl, write(' --------------------------------- '), nl,
         display_board(T),
         display_board([]).
 
