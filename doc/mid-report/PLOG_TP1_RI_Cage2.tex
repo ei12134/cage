@@ -30,13 +30,6 @@ O Cage é um jogo de estratégia em tabuleiro parecido com as damas que foi inve
 \subsection{Regras}
 O Cage é jogado por dois jogadores num tabuleiro de damas com 50 damas vermelhas e 50 damas azuis na versão de tabuleiro 10x10 ou com 32 damas vermelhas e 32 damas azuis na versão de 8x8 tabuleiro. O tabuleiro é inicializado preenchendo todas as casas com damas de cor alternada.
 
-\begin{figure}[H]
-    \center
-    \includegraphics[scale=0.6]{res/1-initial-setup.jpg}
-    \caption{Estado inicial do tabuleiro}
-    \label{fig:1-initial-setup.png}
-\end{figure}
-
 \subsubsection{Objetivo}
 Para vencer é necessário capturar todas as damas inimigas. No final, pode ganhar-se mesmo que se perca a última peça que se está a movimentar (saltar) para capturar todas as damas últimas inimigas.
 
@@ -68,8 +61,8 @@ O movimento de salto permite capturar uma dama inimiga, movimentando a dama do j
 
 \section{Representação do estado do jogo}
 \iffalse (tipicamente uma lista de listas que incluem diferentes átomos para as peças), com exemplificação em Prolog de estados iniciais, intermédios e finais do jogo, acompanhados de imagens ilustrativas \fi
-Na representação de jogo usar-se-ão listas de listas que incluem so 
-atoms para as diferentes peças ($red$ e $blue$) e a casa vazia ($empty$).
+Na representação de jogo usar-se-ão listas de listas que apenas incluem
+átomos para os diferentes tipos de peças ($red$ e $blue$) e a casa vazia ($empty$).
 \subsection{Representação do estado inicial do tabuleiro:}
 \begin{verbatim}
 [[blue,red,blue,red,blue,red,blue,red],
@@ -85,9 +78,16 @@ atoms para as diferentes peças ($red$ e $blue$) e a casa vazia ($empty$).
 
 \begin{figure}[H]
     \center
-    \includegraphics[scale=0.45]{res/7-initial-state.png}
+    \includegraphics[scale=0.35]{res/initial-state-cli.png}
+    \caption{Estado inicial do jogo (linha de comandos)}
+    \label{fig:initial-state-cli.jpg}
+\end{figure}
+
+\begin{figure}[H]
+    \center
+    \includegraphics[scale=0.8]{res/initial-state.jpg}
     \caption{Estado inicial do jogo}
-    \label{fig:7-initial-state.png}
+    \label{fig:initial-state.png}
 \end{figure}
 
 \subsection{Representação de um estado intermédio do tabuleiro:}
@@ -105,9 +105,16 @@ atoms para as diferentes peças ($red$ e $blue$) e a casa vazia ($empty$).
 
 \begin{figure}[H]
     \center
-    \includegraphics[scale=0.45]{res/8-intermediate-state.png}
+    \includegraphics[scale=0.35]{res/intermediate-state-cli.png}
+    \caption{Estado intermédio de um jogo (linha de comandos)}
+    \label{fig:intermediate-state-cli.png}
+\end{figure}
+
+\begin{figure}[H]
+    \center
+    \includegraphics[scale=0.8]{res/intermediate-state.jpg}
     \caption{Estado intermédio de um jogo}
-    \label{fig:8-intermediate-state.png}
+    \label{intermediate-state.jpg}
 \end{figure}
 
 \subsection{Representação de um possível estado final do tabuleiro:}
@@ -125,9 +132,16 @@ atoms para as diferentes peças ($red$ e $blue$) e a casa vazia ($empty$).
 
 \begin{figure}[H]
     \center
-    \includegraphics[scale=0.45]{res/9-final-state.png}
+    \includegraphics[scale=0.36]{res/final-state-cli.png}
+    \caption{Estado final de um jogo CLI (linha de comandos)}
+    \label{fig:final-state-cli.png}
+\end{figure}
+
+\begin{figure}[H]
+    \center
+    \includegraphics[scale=0.8]{res/final-state.jpg}
     \caption{Estado final de um jogo}
-    \label{fig:9-final-state.png}
+    \label{final-state.jpg}
 \end{figure}
 
 \section{Visualização do tabuleiro em modo de texto}

@@ -1,0 +1,14 @@
+\BOOKMARK [1][-]{section.1}{Descri\347\343o do jogo}{}% 1
+\BOOKMARK [2][-]{subsection.1.1}{Regras}{section.1}% 2
+\BOOKMARK [3][-]{subsubsection.1.1.1}{Objetivo}{subsection.1.1}% 3
+\BOOKMARK [3][-]{subsubsection.1.1.2}{Movimentos}{subsection.1.1}% 4
+\BOOKMARK [1][-]{section.2}{Representa\347\343o do estado do jogo}{}% 5
+\BOOKMARK [2][-]{subsection.2.1}{Representa\347\343o do estado inicial do tabuleiro:}{section.2}% 6
+\BOOKMARK [2][-]{subsection.2.2}{Representa\347\343o de um estado interm\351dio do tabuleiro:}{section.2}% 7
+\BOOKMARK [2][-]{subsection.2.3}{Representa\347\343o de um poss\355vel estado final do tabuleiro:}{section.2}% 8
+\BOOKMARK [1][-]{section.3}{Visualiza\347\343o do tabuleiro em modo de texto}{}% 9
+\BOOKMARK [1][-]{section.4}{Movimentos}{}% 10
+\BOOKMARK [2][-]{subsection.4.1}{Restri\347\365es}{section.4}% 11
+\BOOKMARK [2][-]{subsection.4.2}{Centralizador}{section.4}% 12
+\BOOKMARK [2][-]{subsection.4.3}{Adjacente}{section.4}% 13
+\BOOKMARK [2][-]{subsection.4.4}{Salto}{section.4}% 14
