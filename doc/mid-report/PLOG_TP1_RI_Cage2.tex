@@ -25,13 +25,13 @@ Computação\\[1cm]}\normalsize Turma 4 - Grupo Cage\_2}
 \maketitle
 
 \section{Descrição do jogo}
-O Cage é um jogo de estratégia em tabuleiro parecido com as damas que foi inventado por Mark Steere em maio de 2010. O autor descreve-o como um jogo para dois jogadores sem qualquer informação oculta. É abstracto e sem factor sorte, sem empates e sem temas. É jogado num tabuleiro de damas 10x10 ou 8x8 e ao contrário do jogo original das damas, no início todo tabuleiro está preenchido com peças promovidas ``damas''. ``Jogo de aniquilação de alta energia'' é a frase escolhida pelo autor para caricaturizar o jogo, uma vez que o movimento para o centro do tabuleiro assegura a aniquilação de pelo menos uma das cores.
+O Cage é um jogo de estratégia em tabuleiro semelhante às damas que foi inventado por Mark Steere em maio de 2010. O autor descreve-o como um jogo para dois jogadores sem qualquer informação oculta. É abstrato e sem fator sorte, sem empates e sem temas. É jogado num tabuleiro de damas 10x10 ou 8x8 e, ao contrário do jogo original das damas, todo tabuleiro está preenchido, no início, com peças já promovidas a ``damas''. ``Jogo de aniquilação de alta energia'' é a frase escolhida pelo autor para caricaturar o jogo, uma vez que o movimento para o centro do tabuleiro assegura a aniquilação, de pelo menos, uma das cores.
 
 \subsection{Regras}
-O Cage é jogado por dois jogadores num tabuleiro de damas com 50 damas vermelhas e 50 damas azuis na versão de tabuleiro 10x10 ou com 32 damas vermelhas e 32 damas azuis na versão de 8x8 tabuleiro. O tabuleiro é inicializado preenchendo todas as casas com damas de cor alternada.
+O Cage é jogado por dois jogadores num tabuleiro de damas com 50 damas vermelhas e 50 damas azuis na versão de tabuleiro 10x10 ou com 32 damas vermelhas e 32 damas azuis na versão de 8x8 tabuleiro. O tabuleiro é iniciado preenchendo todas as casas com damas de cor alternada.
 
 \subsubsection{Objetivo}
-Para vencer é necessário capturar todas as damas inimigas. No final, pode ganhar-se mesmo que se perca a última peça que se está a movimentar (saltar) para capturar todas as damas últimas inimigas.
+Para vencer é necessário capturar todas as damas inimigas. No final, pode ganhar-se mesmo que se perca a última peça que se está a movimentar (saltar) para capturar todas as damas inimigas ainda em jogo.
 
 \subsubsection{Movimentos}
 Existem quatro tipos de movimentos:
@@ -54,10 +54,10 @@ Este movimento de uma casa, permite à dama deslocar-se na horizontal, vertical 
 
 
 \paragraph{Adjacente}
-Uma dama que nao tenha adjacencias ortogonais com damas inimigas pode-se mover uma casa em qualquer direção que  contenha adjacencias ortogonais com uma ou mais damas inimigas.
+Uma dama que não tenha adjacências ortogonais com damas inimigas pode mover-se apenas uma casa em qualquer direção que contenha adjacências ortogonais com uma ou mais damas inimigas.
 
 \paragraph{Salto}
-O movimento de salto permite capturar uma dama inimiga, movimentando a dama do jogador de uma casa ortogonalmente adjacente de um lado da dama inimiga para a casa vazia adjacente do lado oposto. É possivel capturar uma dama enimiga nas casas periféricas do tabuleiro de uma casa adjacente e do lado oposto da dama inimiga na borda do tabuleiro. O resultado é que quer a dama capturada quer a dama que captura são removidas do tabuleiro neste tipo de captura para fora dos limites do tabuleiro.
+O movimento de salto permite capturar uma dama inimiga, movimentando a dama do jogador de uma casa ortogonalmente adjacente de um lado da dama inimiga para a casa vazia adjacente do lado oposto. É possível capturar uma dama inimiga nas casas periféricas do tabuleiro de uma casa adjacente e do lado oposto da dama inimiga na borda do tabuleiro. O resultado é que quer a dama capturada quer a dama que captura são removidas do tabuleiro.
 
 \section{Representação do estado do jogo}
 \iffalse (tipicamente uma lista de listas que incluem diferentes átomos para as peças), com exemplificação em Prolog de estados iniciais, intermédios e finais do jogo, acompanhados de imagens ilustrativas \fi
@@ -195,9 +195,9 @@ symbol(empty,' ').
 
 \section{Movimentos}
 \iffalse (tipos de jogadas) possíveis, definindo os cabeçalhos dos predicados que serão depois implementados. \fi
-De uma forma geral, nos predicados dos movimentos a seguir apresentados é requerida a receção das linhas e colunas iniciais e finais da peça a mover e do tabuleiro.
+De uma forma geral, nos predicados dos movimentos a seguir apresentados, é requerida a receção das linhas e colunas iniciais e finais da peça a mover e do tabuleiro.
 \subsection{Restrições}
-Restrições aos predicados dos movimentos declarados a seguir. Presume-se que a implementação dos outros predicados relativos aos restantes movimentos requerem a avaliação satisfatória das seguintes restrições.
+Restrições aos predicados dos movimentos declarados a seguir. Presume-se que a implementação dos outros predicados relativos aos restantes movimentos requeiram a avaliação satisfatória das seguintes restrições.
 \begin{verbatim}
 restriction_1(row,col,adj_row,adj_col,boad).
 restriction_2(row,col,adj_row,adj_col,board).
@@ -238,3 +238,4 @@ jump(row,col,dest_row,dest_col,board).
 \end{thebibliography}
 
 \end{document}
+
