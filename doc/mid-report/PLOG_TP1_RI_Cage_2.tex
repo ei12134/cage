@@ -25,7 +25,7 @@ Computação\\[1cm]}\normalsize Turma 4 - Grupo Cage\_2}
 \maketitle
 
 \section{Descrição do jogo}
-O Cage é um jogo de estratégia em tabuleiro semelhante às damas que foi inventado por Mark Steere em maio de 2010. O autor descreve-o como um jogo para dois jogadores sem qualquer informação oculta. É abstrato e sem fator sorte, sem empates e sem temas. É jogado num tabuleiro de damas 10x10 ou 8x8 e, ao contrário do jogo original das damas, todo tabuleiro está preenchido, no início, com peças já promovidas a ``damas''. ``Jogo de aniquilação de alta energia'' é a frase escolhida pelo autor para caricaturar o jogo, uma vez que o movimento para o centro do tabuleiro assegura a aniquilação, de pelo menos, uma das cores.
+O Cage é um jogo de estratégia em tabuleiro semelhante às damas que foi inventado por Mark Steere em maio de 2010. O autor descreve-o como um jogo para dois jogadores sem qualquer informação oculta. É um jogo abstrato sem fator de sorte nem empates. É jogado num tabuleiro de damas 10x10 ou 8x8 e, ao contrário do jogo original das damas, todo tabuleiro está preenchido, no início, com peças já promovidas a ``damas''. ``Jogo de aniquilação de alta energia'' é a frase escolhida pelo autor para caricaturar o jogo, uma vez que o movimento para o centro do tabuleiro assegura a aniquilação, de pelo menos, uma das cores.
 
 \subsection{Regras}
 O Cage é jogado por dois jogadores num tabuleiro de damas com 50 damas vermelhas e 50 damas azuis na versão de tabuleiro 10x10 ou com 32 damas vermelhas e 32 damas azuis na versão de 8x8 tabuleiro. O tabuleiro é iniciado preenchendo todas as casas com damas de cor alternada.
@@ -62,7 +62,7 @@ O movimento de salto permite capturar uma dama inimiga, movimentando a dama do j
 \section{Representação do estado do jogo}
 \iffalse (tipicamente uma lista de listas que incluem diferentes átomos para as peças), com exemplificação em Prolog de estados iniciais, intermédios e finais do jogo, acompanhados de imagens ilustrativas \fi
 Na representação de jogo usar-se-ão listas de listas que apenas incluem
-átomos para os diferentes tipos de peças ($red$ e $blue$) e a casa vazia ($empty$).
+átomos para os diferentes tipos de peças ($red$ e $blue$) e a casa vazia ($empty$). Para simplificação do desenvolvimento do jogo, escolheu-se a versão mais pequena do tabuleiro 8x8 com um total de 64 damas no início do jogo.
 \subsection{Representação do estado inicial do tabuleiro:}
 \begin{verbatim}
 [[blue,red,blue,red,blue,red,blue,red],
