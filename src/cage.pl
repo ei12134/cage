@@ -19,10 +19,13 @@ getPieceDestCoord(DstRow, DstCol):-
          inputCoords(DstRow,DstCol), nl.
 
 inputCoords(Row,Col):-
+        % get_code(_) discards the enter
         getInteger(R), getInteger(C), get_code(_), Row is R-1, Col is C-49.
 
 getInteger(Input):-
         get_code(Temp),
         Input is Temp-48.
+
+
 
 
