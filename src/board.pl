@@ -1,5 +1,5 @@
 % container
-board([[blue,red,blue,red,blue,red,blue,red],
+initial_board([[blue,red,blue,red,blue,red,blue,red],
        [red,blue,red,blue,red,blue,red,blue],
        [blue,red,blue,red,blue,red,blue,red],
        [red,blue,red,blue,red,blue,red,blue],
