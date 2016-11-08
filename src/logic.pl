@@ -12,6 +12,8 @@ validateMove(SrcRow,SrcCol, DestRow, DestCol, Board, ResultBoard):-
         validateJump(SrcRow,SrcCol, DestRow, DestCol, Board, ResultBoard);
         invalidMove.
 
+
+
 invalidMove:-
         write("INVALID MOVE!"), nl,
         write("Press Enter to continue"),nl, fail.
