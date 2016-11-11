@@ -21,6 +21,10 @@ get_integer(Input):-
         get_code(Temp),
         Input is Temp - 48.
 
+get_character(Input):-
+        get_char(Input),
+        get_char(_).
+
 discard_input(_):-
         get_code(_).
 
@@ -44,7 +48,3 @@ print_menu:-
         write('  [2] Player vs. Computer'), nl,
         write('  [3] Computer vs. Computer'), nl, nl,
         write('Enter game mode number:'), nl.
-
-get_character(Input):-
-        get_char(Input),
-        get_char(_).

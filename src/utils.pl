@@ -7,6 +7,7 @@ get_list_element(Pos,[_|OtherElems],Symbol):-
 
 get_matrix_element(0, ElemCol, [ListAtTheHead|_], Elem):-
         get_list_element(ElemCol, ListAtTheHead, Elem).
+
 get_matrix_element(ElemRow, ElemCol, [_|RemainingLists], Elem):-
         ElemRow > 0,
         ElemRow1 is ElemRow-1,

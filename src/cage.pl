@@ -4,7 +4,7 @@
 :- include('utils.pl').
 :- include('cli.pl').
 :- include('board.pl').
-%:- include('logic.pl').
+:- include('logic.pl').
 
 % program starting point
 cage :- main_menu.
@@ -50,20 +50,5 @@ human_play(Game):-
         get_moving_piece_source_coordinates(SrcRow, SrcCol),
         validate_piece_owner(SrcRow, SrcCol, Board, Player),
         get_piece_destiny_coordinates(DestRow, DestCol),
-        validate_destiny_cell_type(SrcRow, SrcCol, Board, Player).
-%        validateMove(SrcRow, SrcCol, DestRow, DestCol, Game, TempGame),
-%        change_player(TempGame, ResultantGame), !.
-
-validate_destiny_cell_type(SrcRow, SrcCol, Board, Player):-
-        get_matrix_element(SrcRow, SrcCol, Board, Piece),
-        \+piece_owned_by(Piece, Player), !.
-validate_destiny_cell_type(_, _, _, _):-
-        write('Invalid destiny cell!'), nl,
-        fail.
-
-validate_piece_owner(SrcRow, SrcCol, Board, Player):-
-        get_matrix_element(SrcRow, SrcCol, Board, Piece),
-        piece_owned_by(Piece, Player), !.
-validate_piece_owner(_, _, _, _):-
-        write('Invalid piece!'), nl,
-        fail.
+        validate_destiny_cell_type(DestRow, DestCol, Board, Player),
+        make_move(SrcRow, SrcCol, DestRow, DestCol, Game, ResultantGame), !.
