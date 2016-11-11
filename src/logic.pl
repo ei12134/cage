@@ -6,30 +6,30 @@
 %restriction_2(row,col,adj_row,adj_col,board).
 
 % not finished (last "invalid move" is not correct)
-make_move(SrcRow,SrcCol, DestRow, DestCol, Board, ResultBoard):-
-        make_jump(SrcRow,SrcCol, DestRow, DestCol, Board, ResultBoard)
+make_move(SrcRow,SrcCol, DestRow, DestCol,Game, ModifiedGame):-
+        make_jump(SrcRow,SrcCol, DestRow, DestCol, Game, ModifiedGame)
 %        make_centering_move(SrcRow,SrcCol, DestRow, DestCol, Board, ResultBoard);
 %        make_adjoining_move(SrcRow,SrcCol, DestRow, DestCol, Board, ResultBoard);
 .
 
-make_jump(SrcRow, SrcCol, DestRow, DestCol, Board, ResultBoard):-  
-        validate_jump(SrcRow, SrcCol, DestRow, DestCol, Board, ResultBoard).
-
-
-validate_jump(SrcRow, SrcCol, DestRow, DestCol, Board, ResultBoard):-
-        get_board(Game,Board),
+make_jump(SrcRow, SrcCol, DestRow, DestCol, Game, ModifiedGame):- 
+        get_board(Game,Board), 
         get_player_turn(Game,Player),
+        validate_jump(SrcRow, SrcCol, DestRow, DestCol, Player, Board).
 
-        % destiny cell must contain an opponent piece
+validate_jump(SrcRow, SrcCol, DestRow, DestCol, Player, Board):-
+
+        % selected destiny cell must contain an opponent piece
         (
-           Player == redPlayer -> validate_cell_contains(DestRow, DestCol, Board, blue);
-           Player == bluePlayer -> validate_cell_contains(DestRow, DestCol, Board, red)
+           Player == redPlayer -> validate_cell_contents(DestRow, DestCol, Board, blue);
+           Player == bluePlayer -> validate_cell_contents(DestRow, DestCol, Board, red)
         ),
-
-        get_jump_type(SrcRow, SrcCol, DestRow, DestCol, JumpType),
 
         % we first need to know if the jump is horizontal or vertical
         % get the destiny empty cell coordinates
+        % real destiny cell must be empty
+        get_jump_type(SrcRow, SrcCol, DestRow, DestCol, JumpType),
+
         DeltaRow is DestRow - SrcRow,
         DeltaCol is DestCol - SrcCol,
         (
@@ -73,32 +73,32 @@ validate_centering_move(SrcRow,SrcCol, DestRow, DestCol, Board, ResultBoard):-
         %get_playerTurn(Game,Player),
 
         % check if movement is directional to the center
-        DistSrcRow is 3 -SrcRow,
-        DistDestRow is 3- DestRow,
+        DistSrcRow is 3 - SrcRow,
+        DistDestRow is 3 - DestRow,
         DistSrcRow < DistDestRow -> invalid_move;
-
 
         % check if destiny cell is empty
         get_board_cell(DestRow,DestCol,Board, Symbol),
         Symbol == empty,
 
         % if everthing is ok move piece
-        move_piece(SrcRow,SrcCol,DestRow,DestCol,Board,ResultBoard),!.
+        move_piece(SrcRow, SrcCol, DestRow, DestCol, Board, ResultBoard), !.
 
-validate_cell_contains(Row, Col, Board, ExpectedContent):-
+validate_cell_contents(Row, Col, Board, ExpectedContent):-
         get_matrix_element(Row, Col, Board, Piece),
-        Piece == ExpectedContent.
+        Piece == ExpectedContent, !.
 
-validate_cell_contains(_, _, _, _):-
-        write('Invalid cell content'), nl,
+validate_cell_contents(_, _, _, _):-
+        write('Invalid cell content type'), nl,
         fail.
 
 validate_destiny_cell_type(Row, Col, Board, Player):-
         get_matrix_element(Row, Col, Board, Piece),
-        \+piece_owned_by(Piece, Player), !.
+        piece_owned_by(NormalPiece, Player),
+        Piece \= NormalPiece, !.
 
 validate_destiny_cell_type(_, _, _, _):-
-        write('Invalid destiny cell!'), nl,
+        write('Invalid destiny cell content type!'), nl,
         fail.
 
 validate_piece_owner(Row, Col, Board, Player):-

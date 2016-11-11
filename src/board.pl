@@ -1,13 +1,14 @@
-% pieces
-piece(red).
-piece(blue).
+% cell contents
+cell(red).
+cell(blue).
+cell(empty).
 
 % symbols
 symbol(red,'x').
 symbol(blue,'o').
 symbol(empty,' ').
 
-get_cell_symbol(emptyCell,' ').
+get_cell_symbol(empty,' ').
 get_cell_symbol(red,'x').
 get_cell_symbol(blue,'o').
 
@@ -21,8 +22,8 @@ get_board_cell(0,Col,[HeadList|_],Symbol):-
         get_list_element(Col,HeadList,Symbol).
 
 get_board_cell(Row,Col,[_|TailList], Symbol):-
-        Row >0,
-        Row1 is Row-1,
+        Row > 0,
+        Row1 is Row - 1,
         get_board_cell(Row1,Col,TailList,Symbol).
 
 % pieces procedures
@@ -62,7 +63,7 @@ display_board([H|T], R) :-
         write('    '), display_empty_line([]),
         write('   '), write(R), display_line(H), nl,
         write('    '), display_empty_line([]),
-        R1 is R-1,
+        R1 is R - 1,
         display_board(T,R1).
 
 display_board([],_):-

@@ -7,9 +7,9 @@
 :- include('logic.pl').
 
 % program starting point
-cage :- main_menu.
+cage:- main_menu.
 
-%players and pieces
+% players and pieces
 player(redPlayer).
 player(bluePlayer).
 
@@ -25,30 +25,30 @@ player_ownes_cell(Row,Col,Game):-
         get_board_cell(Row,Col,Board,Cell),
         piece_owned_by(Cell,Player).
 
-% Human vs Human game mode
+% human vs human mode
 hvh(Game):-
         initial_board(Board),
         Game = [Board, [32, 32], redPlayer, hvh], !.
 
-game_loop(Game) :- 
+game_loop(Game):- 
         validate_board_pieces(Game),
+        get_board(Game, Board),
+        display_board(Board,8),
         human_play(Game).
 
-game_loop(_) :-
+game_loop(_):-
         %        get_board(Game, Board),
         %        display_board(Board),
         write('Game has ended - Player X wins'), nl.
 
 human_play(Game):-
-        get_board(Game, Board),
-        display_board(Board,8),
         get_player_turn(Game, Player),
-
+        get_board(Game, Board),
         repeat,
 
         display_turn_info(Player), nl,
-        get_moving_piece_source_coordinates(SrcRow, SrcCol),
-        validate_piece_owner(SrcRow, SrcCol, Board, Player),
-        get_piece_destiny_coordinates(DestRow, DestCol),
-        validate_destiny_cell_type(DestRow, DestCol, Board, Player),
-        make_move(SrcRow, SrcCol, DestRow, DestCol, Game, ResultantGame), !.
+        get_moving_piece_source_coordinates(SrcRow, SrcCol), 
+        validate_piece_owner(SrcRow, SrcCol, Board, Player), 
+        get_piece_destiny_coordinates(DestRow, DestCol), 
+        validate_destiny_cell_type(DestRow, DestCol, Board, Player), 
+        make_move(SrcRow, SrcCol, DestRow, DestCol, Game, ModifiedGame).
