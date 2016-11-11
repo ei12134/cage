@@ -1,6 +1,3 @@
-:- include('board.pl').
-:- include('utils.pl').
-
 % moves
 %centering_move(row,col,dest_row,dest_col,board).
 %adjoining_mode(row,col,dest_row,dest_col,board).
@@ -29,13 +26,12 @@ validate_centering_move(SrcRow,SrcCol, DestRow, DestCol, Board, ResultBoard):-
         DistSrcRow < DistDestRow -> invalid_move;
 
 
-        %check if destCell is not full
+        % check if destiny cell is empty
         get_board_cell(DestRow,DestCol,Board, Symbol),
         Symbol == empty,
 
-        %if everthing is ok move piece
+        % if everthing is ok move piece
         move_piece(SrcRow,SrcCol,DestRow,DestCol,Board,ResultBoard),!.
 
 invalid_move:-
-        write("INVALID MOVE!"), nl,
-        write("Press Enter to continue"),nl, fail.
+        write("Invalid move!"), nl, fail.
