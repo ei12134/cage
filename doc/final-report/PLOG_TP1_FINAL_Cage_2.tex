@@ -1,13 +1,20 @@
 \documentclass[a4paper]{article}
 
-%use the english line for english reports
-%usepackage[english]{babel}
-\usepackage[portuguese]{babel}
 \usepackage[utf8]{inputenc}
-\usepackage{indentfirst}
+\usepackage{lmodern}
+\usepackage[T1]{fontenc}
+\usepackage[babel=true]{microtype}
+\usepackage[portuguese]{babel}
+\usepackage[pdftex]{hyperref}
 \usepackage{graphicx}
+\usepackage{eurosym}
+\usepackage{scrextend}
+\usepackage{hyphenat}
+\usepackage{url}
+\usepackage{hyperref}
+\usepackage{float}
+\usepackage{indentfirst}
 \usepackage{verbatim}
-
 
 \begin{document}
 
@@ -101,6 +108,28 @@ O movimento de salto permite capturar uma dama inimiga, movimentando a dama do j
 Descrever o projeto e implementação da lógica do jogo em Prolog, incluindo a forma de representação do estado do tabuleiro e sua visualização, execução de movimentos, verificação do cumprimento das regras do jogo, determinação do final do jogo e cálculo das jogadas a realizar pelo computador utilizando diversos níveis de jogo. Sugere-se a estruturação desta secção da seguinte forma:
 
 \subsection{Representação do Estado do Jogo} Pode ser idêntico ao descrito no relatório intercalar.)
+\iffalse (tipicamente uma lista de listas que incluem diferentes átomos para as peças), com exemplificação em Prolog de estados iniciais, intermédios e finais do jogo, acompanhados de imagens ilustrativas \fi
+Na representação de jogo usar-se-ão listas de listas que apenas incluem
+átomos para os diferentes tipos de peças ($red$ e $blue$) e a casa vazia ($empty$). Para simplificação do desenvolvimento do jogo, escolheu-se a versão mais pequena do tabuleiro 8x8 com um total de 64 damas no início do jogo.
+\subsubsection{Representação do estado inicial do tabuleiro:}
+\begin{verbatim}
+[[blue,red,blue,red,blue,red,blue,red],
+ [red,blue,red,blue,red,blue,red,blue],
+ [blue,red,blue,red,blue,red,blue,red],
+ [red,blue,red,blue,red,blue,red,blue],
+ [blue,red,blue,red,blue,red,blue,red],
+ [red,blue,red,blue,red,blue,red,blue],
+ [blue,red,blue,red,blue,red,blue,red],
+ [red,blue,red,blue,red,blue,red,blue]
+]).
+\end{verbatim}
+
+\begin{figure}[H]
+    \center
+    \includegraphics[scale=0.8]{resources/initial-state.jpg}
+    \caption{Estado inicial do jogo}
+    \label{fig:initial-state.png}
+\end{figure}
 
 \subsection{Visualização do Tabuleiro} (Pode ser idêntico ao descrito no relatório intercalar.)
 
@@ -134,7 +163,7 @@ Que conclui deste projecto? Como poderia melhorar o trabalho desenvolvido?
 
 \newpage
 \appendix
-\section{Nome do Anexo}
+\section{Código fonte}
 Código Prolog implementado devidamente comentado e outros elementos úteis que não sejam essenciais ao relatório.
 
 \end{document}

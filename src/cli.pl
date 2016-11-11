@@ -1,5 +1,13 @@
+input_coords(Row,Col):-
+        % get_code(_) discards the enter
+        get_integer(R), get_integer(C), get_code(_), Row is R-1, Col is C-49.
+
+get_integer(Input):-
+        get_code(Temp),
+        Input is Temp-48.
+
 main_menu:-
-        printgameModeMenu,
+        print_menu,
         get_character(Input),
         (
            Input = '1' -> hvh(Game), start(Game);
@@ -8,7 +16,7 @@ main_menu:-
            main_menu
         ).
 
-printgameModeMenu:-
+print_menu:-
         write('        Cage game'), nl, nl,
         write('  [1] Player vs. Player'), nl,
         write('  [2] Player vs. Computer'), nl,
