@@ -78,7 +78,7 @@ get_jump_destiny_cell_coordinates(SrcRow, SrcCol, DestRow, DestCol, JumpType, Em
 validate_adjoining_move(SrcRow, SrcCol, DestRow, DestCol, Player, Board):-
         get_enemy_piece(Player,EnemyPiece),
         validate_ortogonal_adjancencies(SrcRow, SrcCol, EnemyPiece, Board),
-        \+validate_ortogonal_adjancencies(DestRow, DestCol, EnemyPiece, Board).
+        \+validate_ortogonal_adjancencies(DestRow, DestCol, EnemyPiece, Board), !.
 
 
 validate_jump(SrcRow, SrcCol, DestRow, DestCol, Player, Board, JumpDestinyRow, JumpDestinyCol):-
@@ -145,11 +145,11 @@ validate_centering_move(SrcRow, SrcCol, DestRow, DestCol):-
         ),!.
 
 validate_ortogonal_adjancencies(DestRow, DestCol, AvoidPiece, Board):-   
-        (       IncRow is DestRow + 1, IncRow =< 7 -> validate_ortogonal_cell_contents(IncRow, DestCol, Board, AvoidPiece),
-                                                      DecRow is DestRow - 1, DecRow >= 0 -> validate_ortogonal_cell_contents(DecRow, DestCol, Board, AvoidPiece), 
-                                                                                            IncCol is DestCol + 1, IncCol =< 7 -> validate_ortogonal_cell_contents(DestRow, IncCol, Board, AvoidPiece),
-                                                                                                                                  DecCol is DestCol - 1, DecCol >= 0 -> validate_ortogonal_cell_contents(DestRow, DecCol, Board, AvoidPiece)
-        ),!.
+        (       IncRow is DestRow + 1, IncRow =< 7 -> validate_ortogonal_cell_contents(IncRow, DestCol, Board, AvoidPiece);
+                DecRow is DestRow - 1, DecRow >= 0 -> validate_ortogonal_cell_contents(DecRow, DestCol, Board, AvoidPiece);
+                IncCol is DestCol + 1, IncCol =< 7 -> validate_ortogonal_cell_contents(DestRow, IncCol, Board, AvoidPiece);
+                DecCol is DestCol - 1, DecCol >= 0 -> validate_ortogonal_cell_contents(DestRow, DecCol, Board, AvoidPiece)
+        ), !.
 
 validate_ortogonal_adjancencies(_, _, _, _):-
         write('Destiny cell with bad ortogonal adjacency!'), nl,
