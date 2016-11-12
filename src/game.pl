@@ -2,7 +2,7 @@
 hvh(Game):-
         %        initial_board(Board),
         test_board(Board),
-        Game = [Board, [32, 32], redPlayer, hvh], !.
+        Game = [Board, [32, 32], redPlayer, hvh, noForceJump], !.
 
 % board procedures
 get_board([Board|_], Board).
@@ -72,4 +72,10 @@ get_enemy_piece(Player, EnemyPiece):-
            PlayerPiece == blue -> EnemyPiece = red
         ).
 
+% jump forcing variable
+get_force_jump(Game,ForceMode):-
+        get_list_element(4,Game,ForceMode).
+
+set_force_jump(ForceMode, Game, ModifiedGame):-
+        set_list_element(4, ForceMode, Game, ModifiedGame).
 

@@ -42,13 +42,13 @@ initial_board([[blue,red,blue,red,blue,red,blue,red],
               ]).
 
 % test board
-test_board([[empty,empty,empty,empty,empty,red,empty,empty],
+test_board([[red,blue,empty,blue,empty,empty,empty,empty],
             [empty,empty,empty,empty,empty,blue,empty,empty],
             [empty,empty,empty,empty,empty,empty,empty,empty],
-            [empty,empty,red,blue,empty,empty,empty,empty],
-            [empty,empty,empty,blue,red,empty,empty,empty],
-            [red,empty,empty,empty,empty,empty,empty,empty],
-            [blue,empty,empty,empty,empty,empty,red,empty],
+            [empty,empty,red,blue,empty,empty,empty,red],
+            [blue,empty,empty,blue,red,empty,empty,blue],
+            [empty,empty,empty,empty,empty,empty,empty,empty],
+            [empty,empty,empty,empty,empty,empty,red,empty],
             [empty,empty,empty,empty,empty,empty,empty,empty]
            ]).
 
