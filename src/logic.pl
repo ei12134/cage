@@ -7,9 +7,10 @@
 
 % not finished (last "invalid move" is not correct)
 make_move(SrcRow,SrcCol, DestRow, DestCol,Game, ModifiedGame):-
-        (       nl, write('Attempting to make a jump move'), nl, make_jump(SrcRow,SrcCol, DestRow, DestCol, Game, TemporaryGame);
-                nl, write('Attempting to make an adjoining move'), nl, make_adjoining_move(SrcRow,SrcCol, DestRow, DestCol, Game, TemporaryGame);
-                nl, write('Attempting to make a centering move'), nl, make_centering_move(SrcRow,SrcCol, DestRow, DestCol, Game, TemporaryGame)
+        (       nl, write('Attempting to make a jump move...'), nl, make_jump(SrcRow,SrcCol, DestRow, DestCol, Game, TemporaryGame);
+                write('Failed to make a jump move!'), nl, nl, write('Attempting to make an adjoining move...'), nl, make_adjoining_move(SrcRow,SrcCol, DestRow, DestCol, Game, TemporaryGame);
+                write('Failed to make an adjoining move!'), nl, nl, write('Attempting to make a centering move...'), nl, make_centering_move(SrcRow,SrcCol, DestRow, DestCol, Game, TemporaryGame);
+                write('Failed to make a centering move!'), nl, fail
         ),
         get_force_jump(TemporaryGame, ForceJumpMode),
         (
@@ -43,8 +44,12 @@ make_jump(SrcRow, SrcCol, DestRow, DestCol, Game, ModifiedGame):-
         capture_piece(SrcRow, SrcCol, DestRow, DestCol, JumpDestinyRow, JumpDestinyCol, Game, TemporaryGame),
         get_board(TemporaryGame,ModifiedBoard), 
         (
-           validate_force_jump(JumpDestinyRow, JumpDestinyCol, Player, ModifiedBoard), set_force_jump(forceJump, TemporaryGame,ModifiedGame), write('jumping forced'), nl;
-           set_force_jump(noForceJump, TemporaryGame,ModifiedGame), write('jumping not forced'), nl
+           validate_force_jump(JumpDestinyRow, JumpDestinyCol, Player, ModifiedBoard),
+           set_force_jump(forceJump, JumpDestinyRow, JumpDestinyCol, TemporaryGame, ModifiedGame),
+           write('Jumping move is now forced.'), nl, nl;
+
+           set_force_jump(noForceJump, 0, 0, TemporaryGame, ModifiedGame),
+           write('Jumping move is not forced.'), nl, nl
         ), !.
 
 capture_piece(SrcRow, SrcCol, DestRow, DestCol, JumpDestinyRow, JumpDestinyCol, Game, ModifiedGame):-

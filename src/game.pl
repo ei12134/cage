@@ -2,7 +2,7 @@
 hvh(Game):-
         %        initial_board(Board),
         test_board(Board),
-        Game = [Board, [32, 32], redPlayer, hvh, noForceJump], !.
+        Game = [Board, [32, 32], redPlayer, hvh, noForceJump, 0, 0], !.
 
 % board procedures
 get_board([Board|_], Board).
@@ -76,6 +76,20 @@ get_enemy_piece(Player, EnemyPiece):-
 get_force_jump(Game,ForceMode):-
         get_list_element(4,Game,ForceMode).
 
-set_force_jump(ForceMode, Game, ModifiedGame):-
-        set_list_element(4, ForceMode, Game, ModifiedGame).
+get_force_starting_row(Game,Row):-
+        get_list_element(5,Game,Row).
+
+get_force_starting_col(Game,Col):-
+        get_list_element(6,Game,Col).
+
+set_force_jump(ForceMode, ForceStartingRow, ForceStartingCol, Game, ModifiedGame):-
+        set_list_element(4, ForceMode, Game, TemporaryGame),
+        set_force_jump_starting_row(ForceStartingRow, TemporaryGame, TemporaryGame2),
+        set_force_jump_starting_col(ForceStartingCol, TemporaryGame2, ModifiedGame).
+
+set_force_jump_starting_row(Row, Game, ModifiedGame):-
+        set_list_element(5, Row, Game, ModifiedGame).
+
+set_force_jump_starting_col(Col, Game, ModifiedGame):-
+        set_list_element(6, Col, Game, ModifiedGame).
 

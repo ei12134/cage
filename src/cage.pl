@@ -42,8 +42,26 @@ human_play(Game, ModifiedGame):-
         repeat,
         display_turn_info(Player), nl,
         get_moving_piece_source_coordinates(SrcRow, SrcCol), 
-        validate_piece_owner(SrcRow, SrcCol, Board, Player), 
+        validate_piece_owner(SrcRow, SrcCol, Board, Player),
+
+        get_force_jump(Game,ForceMode),
+        get_force_starting_row(Game,ForceJumRow),
+        get_force_starting_col(Game,ForceJumCol),
+
+        (
+           ForceMode == forceJump -> write('A jumping move from the same spot is mandatory'), nl,
+                                     SrcRow == ForceJumRow, SrcCol == ForceJumCol;
+           true
+        ),
+
         get_piece_destiny_coordinates(DestRow, DestCol), 
         validate_source_to_destiny_delta(SrcRow, SrcCol, DestRow, DestCol),
-        validate_destiny_cell_type(DestRow, DestCol, Board, Player), 
+
+        (
+           ForceMode == forceJump -> write('A jumping move is mandatory'), nl,
+                                     get_enemy_piece(Player, EnemyPiece),
+                                     validate_cell_contents(DestRow, DestCol, Board, EnemyPiece);
+           validate_destiny_cell_type(DestRow, DestCol, Board, Player)
+        ),
+
         make_move(SrcRow, SrcCol, DestRow, DestCol, Game, ModifiedGame), !.
