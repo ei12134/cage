@@ -30,10 +30,9 @@ game_loop(Game):-
         human_play(Game, ModifiedGame),
         game_loop(ModifiedGame).
 
-game_loop(_):-
-        %        get_board(Game, Board),
-        %        display_board(Board),
-        write('Game has ended - Player X wins'), nl.
+game_loop(Game):-
+        get_enemy_turn(Game, PreviousPlayer),
+        write('Game has ended - Player '), write(PreviousPlayer), write(' wins'), nl.
 
 human_play(Game, ModifiedGame):-
         get_player_turn(Game, Player),

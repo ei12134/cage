@@ -2,7 +2,7 @@
 hvh(Game):-
         %        initial_board(Board),
         test_board(Board),
-        Game = [Board, [32, 32], redPlayer, hvh, noForceJump, 0, 0], !.
+        Game = [Board, [1, 2], redPlayer, hvh, noForceJump, 0, 0], !.
 
 % board procedures
 get_board([Board|_], Board).
@@ -28,7 +28,7 @@ set_num_red_pieces(NumRedPieces, Game, ModifiedGame):-
 
 get_num_blue_pieces(Game,NumBluePieces):-
         get_num_board_pieces(Game,ListOfPieces),
-        get_list_element(0,ListOfPieces,NumBluePieces).
+        get_list_element(1,ListOfPieces,NumBluePieces).
 
 set_num_blue_pieces(NumBluePieces, Game, ModifiedGame):-
         get_num_board_pieces(Game, NumPiecesList),
@@ -54,6 +54,14 @@ dec_num_blue_pieces(Game, ModifiedGame):-
 % player
 get_player_turn(Game,Player):-
         get_list_element(2,Game,Player).
+
+get_enemy_turn(Game,EnemyPlayer):-
+        get_list_element(2,Game,Player),
+        (
+           Player == redPlayer, EnemyPlayer = bluePlayer;
+           EnemyPlayer = Player
+        ).
+
 
 set_player_turn(Player, Game, ModifiedGame):-
         set_list_element(2, Player, Game, ModifiedGame).
