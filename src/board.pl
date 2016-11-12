@@ -41,6 +41,17 @@ initial_board([[blue,red,blue,red,blue,red,blue,red],
                [red,blue,red,blue,red,blue,red,blue]
               ]).
 
+% test board
+test_board([[empty,empty,empty,empty,empty,red,empty,empty],
+            [empty,empty,empty,empty,empty,blue,empty,empty],
+            [empty,empty,empty,empty,empty,empty,empty,empty],
+            [empty,empty,red,blue,empty,empty,empty,empty],
+            [empty,empty,empty,blue,red,empty,empty,empty],
+            [red,empty,empty,empty,empty,empty,empty,empty],
+            [blue,empty,empty,empty,empty,red,empty,empty],
+            [empty,empty,empty,empty,empty,empty,empty,empty]
+           ]).
+
 % display board
 display_board([H|T], R) :- 
         % how to display 1st line border?

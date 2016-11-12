@@ -1,6 +1,7 @@
 % human vs human mode
 hvh(Game):-
-        initial_board(Board),
+        %        initial_board(Board),
+        test_board(Board),
         Game = [Board, [32, 32], redPlayer, hvh], !.
 
 % board procedures
@@ -63,5 +64,12 @@ change_player_turn(TemporaryGame,ModifiedGame):-
            OldTurn == redPlayer -> NewTurn = bluePlayer;
            OldTurn == bluePlayer -> NewTurn = redPlayer
         ), set_player_turn(NewTurn,TemporaryGame,ModifiedGame),!.
+
+get_enemy_piece(Player, EnemyPiece):-
+        piece_owned_by(PlayerPiece,Player),
+        (
+           PlayerPiece == red -> EnemyPiece = blue;
+           PlayerPiece == blue -> EnemyPiece = red
+        ).
 
 
