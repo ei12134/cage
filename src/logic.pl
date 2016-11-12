@@ -26,7 +26,8 @@ move_piece(SrcRow, SrcCol, DestRow, DestCol, Board, ModifiedBoard):-
 
 make_centering_move(SrcRow,SrcCol, DestRow, DestCol, Game, ModifiedGame):-
         get_board(Game,Board),
-        validate_centering_move(SrcRow, SrcCol, DestRow, DestCol),
+        get_player_turn(Game, Player),
+        validate_centering_move(SrcRow, SrcCol, DestRow, DestCol, Player, Board),
         move_piece(SrcRow, SrcCol, DestRow, DestCol, Board, ModifiedBoard),
         set_board(ModifiedBoard, Game, ModifiedGame).
 
@@ -137,7 +138,6 @@ validate_force_jump(JumpDestinyRow, JumpDestinyCol, Player, Board):-
             validate_ortogonal_adjancencies(IncRow2, JumpDestinyCol, PlayerPiece, Board)
            );
 
-
            (DecRow >= 0, validate_force_jump_cell_contents(DecRow, JumpDestinyCol, Board, EnemyPiece),
             DecRow2 is DecRow - 1,
             validate_force_jump_cell_contents(DecRow2, JumpDestinyCol, Board, empty),
@@ -170,8 +170,10 @@ get_quadrant(SrcRow,SrcCol,Quadrant):-
         SrcRow >=4, SrcRow =< 7, SrcCol >= 0, SrcCol =< 3 -> Quadrant = 3;
         SrcRow >=4, SrcRow =< 7, SrcCol >= 4, SrcCol =< 7 -> Quadrant = 4.
 
-validate_centering_move(SrcRow, SrcCol, DestRow, DestCol):-
+validate_centering_move(SrcRow, SrcCol, DestRow, DestCol, Player, Board):-
         validate_not_centered(SrcRow,SrcCol),
+        piece_owned_by(PlayerPiece, Player),
+        validate_ortogonal_adjancencies(DestRow, DestCol, PlayerPiece, Board),
         get_quadrant(SrcRow,SrcCol,Quadrant),
         DeltaRow is DestRow - SrcRow,
         DeltaCol is DestCol - SrcCol,
