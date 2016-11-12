@@ -17,9 +17,6 @@ player(bluePlayer).
 get_player_name(redPlayer, 'Red').
 get_player_name(bluePlayer, 'Blue').
 
-get_player_turn(Game,Player):-
-        get_list_element(2,Game,Player).
-
 player_ownes_cell(Row,Col,Game):-
         get_board(Game,Board),
         get_player_turn(Game,Player),
@@ -30,14 +27,15 @@ game_loop(Game):-
         validate_board_pieces(Game),
         get_board(Game, Board),
         display_board(Board,8),
-        human_play(Game).
+        human_play(Game, ModifiedGame),
+        game_loop(ModifiedGame).
 
 game_loop(_):-
         %        get_board(Game, Board),
         %        display_board(Board),
         write('Game has ended - Player X wins'), nl.
 
-human_play(Game):-
+human_play(Game, ModifiedGame):-
         get_player_turn(Game, Player),
         get_board(Game, Board),
 

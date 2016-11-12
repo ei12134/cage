@@ -7,15 +7,43 @@
 
 % not finished (last "invalid move" is not correct)
 make_move(SrcRow,SrcCol, DestRow, DestCol,Game, ModifiedGame):-
-        make_jump(SrcRow,SrcCol, DestRow, DestCol, Game, ModifiedGame), !
-%        make_centering_move(SrcRow,SrcCol, DestRow, DestCol, Board, ResultBoard);
-%        make_adjoining_move(SrcRow,SrcCol, DestRow, DestCol, Board, ResultBoard);
-.
+        make_jump(SrcRow,SrcCol, DestRow, DestCol, Game, TemporaryGame),
+        %        make_centering_move(SrcRow,SrcCol, DestRow, DestCol, Board, ResultBoard);
+        %        make_adjoining_move(SrcRow,SrcCol, DestRow, DestCol, Board, ResultBoard);
+        change_player_turn(TemporaryGame,ModifiedGame),!.
+
+move_piece(SrcRow, SrcCol, DestRow, DestCol, Board, ModifiedBoard):-
+        get_matrix_element(SrcRow,SrcCol,Board,SrcElem),
+        set_matrix_element(SrcRow,SrcCol,empty,Board,TemporaryBoard),
+        set_matrix_element(DestRow,DestCol,SrcElem,TemporaryBoard,ModifiedBoard).
 
 make_jump(SrcRow, SrcCol, DestRow, DestCol, Game, ModifiedGame):- 
         get_board(Game,Board), 
         get_player_turn(Game,Player),
-        validate_jump(SrcRow, SrcCol, DestRow, DestCol, Player, Board), !.
+        validate_jump(SrcRow, SrcCol, DestRow, DestCol, Player, Board, JumpDestinyRow, JumpDestinyCol),
+        capture_piece(SrcRow, SrcCol, DestRow, DestCol, JumpDestinyRow, JumpDestinyCol, Game, ModifiedGame), !.   
+
+capture_piece(SrcRow, SrcCol, DestRow, DestCol, JumpDestinyRow, JumpDestinyCol, Game, ModifiedGame):-
+        % get current board
+        get_board(Game, Board),
+
+        % empty the captured piece cell
+        get_matrix_element(DestRow, DestCol, Board, RemovedCapturedPiece),
+        set_matrix_element(DestRow, DestCol, empty, Board, TemporaryBoard),
+        dec_piece(RemovedCapturedPiece,Game,TemporaryGame),
+
+        (
+           % piece jumped out of the board -> clean two pieces 
+           (JumpDestinyRow < 0 ; JumpDestinyRow > 7 ; JumpDestinyCol < 0 ; JumpDestinyCol > 7) ->  get_matrix_element(SrcRow, SrcCol, TemporaryBoard, RemovedPiece),
+                                                                                                   set_matrix_element(SrcRow, SrcCol, empty, TemporaryBoard, ModifiedBoard),
+                                                                                                   dec_piece(RemovedPiece,TemporaryGame,TemporaryGame2),
+                                                                                                   set_board(ModifiedBoard, TemporaryGame2, ModifiedGame);
+
+           (JumpDestinyRow >= 0, JumpDestinyRow =< 7, JumpDestinyCol =< 7, JumpDestinyCol >= 0) -> move_piece(SrcRow, SrcCol, JumpDestinyRow, JumpDestinyCol, TemporaryBoard, ModifiedBoard),
+                                                                                                   set_board(ModifiedBoard, TemporaryGame, ModifiedGame)
+        ).
+
+
 
 get_jump_destiny_cell_coordinates(SrcRow, SrcCol, DestRow, DestCol, JumpType, EmptyCellRow, EmptyCellCol):-
         DeltaRow is DestRow - SrcRow,
@@ -33,7 +61,7 @@ get_jump_destiny_cell_coordinates(SrcRow, SrcCol, DestRow, DestCol, JumpType, Em
            )
         ),!.
 
-validate_jump(SrcRow, SrcCol, DestRow, DestCol, Player, Board):-
+validate_jump(SrcRow, SrcCol, DestRow, DestCol, Player, Board, JumpDestinyRow, JumpDestinyCol):-
         % selected destiny cell must contain an opponent piece
         (
            Player == redPlayer -> validate_cell_contents(DestRow, DestCol, Board, blue);
@@ -44,25 +72,13 @@ validate_jump(SrcRow, SrcCol, DestRow, DestCol, Player, Board):-
         % get the destiny empty cell coordinates
         % real destiny cell must be empty
         get_jump_type(SrcRow, SrcCol, DestRow, DestCol, JumpType),
-        get_jump_destiny_cell_coordinates(SrcRow, SrcCol, DestRow, DestCol, JumpType, EmptyCellRow, EmptyCellCol),
-        validate_cell_contents(EmptyCellRow, EmptyCellCol, Board, empty), !.
+        get_jump_destiny_cell_coordinates(SrcRow, SrcCol, DestRow, DestCol, JumpType, JumpDestinyRow, JumpDestinyCol),
 
-%% validate horizontal movement
-%DeltaCol is abs(DestCol - SrcCol),
-%(DeltaCol =:= 0; DeltaCol =:= 2),
-%
-%% check if destiny cell is empty
-%getMatrixElemAt(DestRow, DestCol, Board, Cell),
-%Cell == emptyCell,
-%
-%% check if cell between source and destiny is friendly
-%MiddleCellRow is SrcRow + DeltaRow // 2,
-%MiddleCellCol is SrcCol + (DestCol - SrcCol) // 2,
-%getMatrixElemAt(MiddleCellRow, MiddleCellCol, Board, MiddleCell),
-%(
-%Player == whitePlayer -> MiddleCell == whiteCell;
-%Player == blackPlayer -> MiddleCell == blackCell
-%).
+        (
+           (JumpDestinyRow >= 0, JumpDestinyRow =< 7, JumpDestinyCol >= 0, JumpDestinyCol =< 7) -> validate_cell_contents(JumpDestinyRow, JumpDestinyCol, Board, empty);
+           true
+        ), !.
+
 
 get_jump_type(SrcRow, SrcCol, DestRow, DestCol, JumpType):-
         (
