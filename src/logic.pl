@@ -134,14 +134,22 @@ validate_force_jump(JumpDestinyRow, JumpDestinyCol, Player, Board):-
         (
            (IncRow =< 7, validate_force_jump_cell_contents(IncRow, JumpDestinyCol, Board, EnemyPiece),
             IncRow2 is IncRow + 1,
-            validate_force_jump_cell_contents(IncRow2, JumpDestinyCol, Board, empty),
-            validate_ortogonal_adjancencies(IncRow2, JumpDestinyCol, PlayerPiece, Board)
+            (
+               IncRow2 =<7 ->(
+                                validate_force_jump_cell_contents(IncRow2, JumpDestinyCol, Board, empty),
+                                validate_ortogonal_adjancencies(IncRow2, JumpDestinyCol, PlayerPiece, Board)
+                             );
+               true
+            )
            );
 
            (DecRow >= 0, validate_force_jump_cell_contents(DecRow, JumpDestinyCol, Board, EnemyPiece),
             DecRow2 is DecRow - 1,
-            validate_force_jump_cell_contents(DecRow2, JumpDestinyCol, Board, empty),
-            validate_ortogonal_adjancencies(DecRow2, JumpDestinyCol, PlayerPiece, Board)
+            DecRow2 >= 0 -> (
+                               validate_force_jump_cell_contents(DecRow2, JumpDestinyCol, Board, empty),
+                               validate_ortogonal_adjancencies(DecRow2, JumpDestinyCol, PlayerPiece, Board)
+                            ); 
+            true
            );
 
            (IncCol =< 7, validate_force_jump_cell_contents(JumpDestinyRow, IncCol, Board, EnemyPiece),
@@ -157,8 +165,13 @@ validate_force_jump(JumpDestinyRow, JumpDestinyCol, Player, Board):-
 
            (DecCol >= 0, validate_force_jump_cell_contents(JumpDestinyRow, DecCol, Board, EnemyPiece),
             DecCol2 is DecCol - 1,
-            validate_force_jump_cell_contents(JumpDestinyRow, DecCol2, Board, empty),
-            validate_ortogonal_adjancencies(JumpDestinyRow, DecCol2, PlayerPiece, Board)
+            (
+               DecCol2 >= 0 -> (
+                                  validate_force_jump_cell_contents(JumpDestinyRow, DecCol2, Board, empty),
+                                  validate_ortogonal_adjancencies(JumpDestinyRow, DecCol2, PlayerPiece, Board)
+                               );
+               true
+            )
            )
         ).
 
