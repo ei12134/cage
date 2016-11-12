@@ -3,6 +3,7 @@
 :- use_module(library(system)).
 :- include('utils.pl').
 :- include('cli.pl').
+:- include('game.pl').
 :- include('board.pl').
 :- include('logic.pl').
 
@@ -25,11 +26,6 @@ player_ownes_cell(Row,Col,Game):-
         get_board_cell(Row,Col,Board,Cell),
         piece_owned_by(Cell,Player).
 
-% human vs human mode
-hvh(Game):-
-        initial_board(Board),
-        Game = [Board, [32, 32], redPlayer, hvh], !.
-
 game_loop(Game):- 
         validate_board_pieces(Game),
         get_board(Game, Board),
@@ -44,11 +40,12 @@ game_loop(_):-
 human_play(Game):-
         get_player_turn(Game, Player),
         get_board(Game, Board),
-        repeat,
 
+        repeat,
         display_turn_info(Player), nl,
         get_moving_piece_source_coordinates(SrcRow, SrcCol), 
         validate_piece_owner(SrcRow, SrcCol, Board, Player), 
         get_piece_destiny_coordinates(DestRow, DestCol), 
+        validate_source_to_destiny_delta(SrcRow, SrcCol, DestRow, DestCol),
         validate_destiny_cell_type(DestRow, DestCol, Board, Player), 
-        make_move(SrcRow, SrcCol, DestRow, DestCol, Game, ModifiedGame).
+        make_move(SrcRow, SrcCol, DestRow, DestCol, Game, ModifiedGame), !.

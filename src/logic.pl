@@ -7,7 +7,7 @@
 
 % not finished (last "invalid move" is not correct)
 make_move(SrcRow,SrcCol, DestRow, DestCol,Game, ModifiedGame):-
-        make_jump(SrcRow,SrcCol, DestRow, DestCol, Game, ModifiedGame)
+        make_jump(SrcRow,SrcCol, DestRow, DestCol, Game, ModifiedGame), !
 %        make_centering_move(SrcRow,SrcCol, DestRow, DestCol, Board, ResultBoard);
 %        make_adjoining_move(SrcRow,SrcCol, DestRow, DestCol, Board, ResultBoard);
 .
@@ -15,10 +15,25 @@ make_move(SrcRow,SrcCol, DestRow, DestCol,Game, ModifiedGame):-
 make_jump(SrcRow, SrcCol, DestRow, DestCol, Game, ModifiedGame):- 
         get_board(Game,Board), 
         get_player_turn(Game,Player),
-        validate_jump(SrcRow, SrcCol, DestRow, DestCol, Player, Board).
+        validate_jump(SrcRow, SrcCol, DestRow, DestCol, Player, Board), !.
+
+get_jump_destiny_cell_coordinates(SrcRow, SrcCol, DestRow, DestCol, JumpType, EmptyCellRow, EmptyCellCol):-
+        DeltaRow is DestRow - SrcRow,
+        DeltaCol is DestCol - SrcCol,
+        (
+           JumpType == horizontal -> 
+           (
+              (DeltaCol > 0) -> EmptyCellCol is DestCol + 1, EmptyCellRow is SrcRow;
+              (DeltaCol < 0) -> EmptyCellCol is DestCol - 1, EmptyCellRow is SrcRow
+           );
+           JumpType == vertical -> 
+           (
+              (DeltaRow > 0) -> EmptyCellRow is DestRow + 1, EmptyCellCol is SrcCol;
+              (DeltaRow < 0) -> EmptyCellRow is DestRow - 1, EmptyCellCol is SrcCol
+           )
+        ),!.
 
 validate_jump(SrcRow, SrcCol, DestRow, DestCol, Player, Board):-
-
         % selected destiny cell must contain an opponent piece
         (
            Player == redPlayer -> validate_cell_contents(DestRow, DestCol, Board, blue);
@@ -29,21 +44,8 @@ validate_jump(SrcRow, SrcCol, DestRow, DestCol, Player, Board):-
         % get the destiny empty cell coordinates
         % real destiny cell must be empty
         get_jump_type(SrcRow, SrcCol, DestRow, DestCol, JumpType),
-
-        DeltaRow is DestRow - SrcRow,
-        DeltaCol is DestCol - SrcCol,
-        (
-           JumpType == horizontal -> (
-                                        DeltaRow > 0 -> EmptyCellRow is DestRow + 1;
-                                        DeltaRow < 0 -> EmptyCellRow is DestRow - 1
-                                     );
-
-           JumpType == vertical ->
-           (
-              DeltaCol > 0 -> EmptyCellCol is DestCol + 1;
-              DeltaCol < 0 -> EmptyCellCol is DestRow - 1
-           )
-        ).
+        get_jump_destiny_cell_coordinates(SrcRow, SrcCol, DestRow, DestCol, JumpType, EmptyCellRow, EmptyCellCol),
+        validate_cell_contents(EmptyCellRow, EmptyCellCol, Board, empty), !.
 
 %% validate horizontal movement
 %DeltaCol is abs(DestCol - SrcCol),
@@ -84,6 +86,18 @@ validate_centering_move(SrcRow,SrcCol, DestRow, DestCol, Board, ResultBoard):-
         % if everthing is ok move piece
         move_piece(SrcRow, SrcCol, DestRow, DestCol, Board, ResultBoard), !.
 
+validate_source_to_destiny_delta(SrcRow, SrcCol, DestRow, DestCol):-
+        DeltaRow is abs(DestRow - SrcRow),
+        DeltaCol is abs(DestCol - SrcCol),
+        (
+           DeltaRow == 0 -> DeltaCol == 1;
+           DeltaCol == 0 -> DeltaRow == 1
+        ),!.
+
+validate_source_to_destiny_delta(_, _, _, _):-
+        write('Invalid destiny cell distance delta!'), nl,
+        fail.
+
 validate_cell_contents(Row, Col, Board, ExpectedContent):-
         get_matrix_element(Row, Col, Board, Piece),
         Piece == ExpectedContent, !.
@@ -94,8 +108,9 @@ validate_cell_contents(_, _, _, _):-
 
 validate_destiny_cell_type(Row, Col, Board, Player):-
         get_matrix_element(Row, Col, Board, Piece),
-        piece_owned_by(NormalPiece, Player),
-        Piece \= NormalPiece, !.
+        \+ piece_owned_by(Piece, Player), !.
+%        piece_owned_by(NormalPiece, Player),
+%        Piece \= NormalPiece, !.
 
 validate_destiny_cell_type(_, _, _, _):-
         write('Invalid destiny cell content type!'), nl,

@@ -15,9 +15,6 @@ get_cell_symbol(blue,'o').
 piece_owned_by(red,redPlayer).
 piece_owned_by(blue,bluePlayer).
 
-% board procedures
-get_board([Board|_], Board).
-
 get_board_cell(0,Col,[HeadList|_],Symbol):-
         get_list_element(Col,HeadList,Symbol).
 
@@ -25,18 +22,6 @@ get_board_cell(Row,Col,[_|TailList], Symbol):-
         Row > 0,
         Row1 is Row - 1,
         get_board_cell(Row1,Col,TailList,Symbol).
-
-% pieces procedures
-get_num_board_pieces(Game,ListOfPieces):-
-        get_list_element(1,Game,ListOfPieces).
-
-get_num_red_pieces(Game,NumRedPieces):-
-        get_num_board_pieces(Game,ListOfPieces),
-        get_list_element(0,ListOfPieces,NumRedPieces).
-
-get_num_blue_pieces(Game,NumBluePieces):-
-        get_num_board_pieces(Game,ListOfPieces),
-        get_list_element(0,ListOfPieces,NumBluePieces).
 
 % checks if both players have pieces on the board
 validate_board_pieces(Game):-
