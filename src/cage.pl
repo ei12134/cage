@@ -30,27 +30,13 @@ game_loop(Game):-
         validate_board_pieces(Game),
         get_board(Game, Board),
         display_board(Board,8),
-        get_mode(Game, Mode),
+        get_mode(Game, GameMode),
         (
-           Mode == cvc -> computer_play(0,Game,ModifiedGame), !;
-
-           (
-              human_play(Game, HumanPlayedGame),
-              % human vs human
-              get_board(HumanPlayedGame, HumanPlayedBoard),
-              display_board(HumanPlayedBoard,8),
-
-              Mode == hvh ->  human_play(Game, ModifiedGame), !;
-
-              % human vs computer
-              get_player_turn(HumanPlayedGame, Player),
-              get_force_jump(HumanPlayedGame,ForceMode),
-              (
-                 ForceMode == noForceJump -> computer_play(0,HumanPlayedGame, ModifiedGame);
-                 (ForceMode == forceJump, Player == bluePlayer) -> computer_play(0,HumanPlayedGame, ModifiedGame);
-                 ModifiedGame = HumanPlayedGame
-              )
-           )
+           GameMode == cvc -> (computer_play(0,Game,ModifiedGame));
+           GameMode == hvc -> (
+                                 (get_player_turn(Game, Player), Player \== redPlayer) -> computer_play(0, Game, ModifiedGame);
+                                 human_play(Game, ModifiedGame)
+                              )
         ),
         game_loop(ModifiedGame).
 

@@ -73,6 +73,17 @@ bot_test_board([[blue,red,blue,red,blue,red,blue,red],
                 [red,blue,red,empty,red,blue,red,blue]
                ]).
 
+% bot winning test | 1 red | 3 blue |
+bot_win_test_board([[empty,empty,empty,empty,empty,empty,empty,empty],
+                    [empty,empty,empty,empty,empty,empty,empty,empty],
+                    [empty,empty,empty,empty,empty,empty,empty,blue],
+                    [empty,empty,empty,red,blue,empty,blue,empty],
+                    [empty,empty,empty,empty,empty,empty,empty,empty],
+                    [empty,empty,empty,empty,empty,empty,empty,empty],
+                    [empty,empty,empty,empty,empty,empty,empty,empty],
+                    [empty,empty,empty,empty,empty,empty,empty,empty]
+                   ]).
+
 % display board
 display_board([H|T], R) :- 
         % how to display 1st line border?

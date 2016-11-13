@@ -12,6 +12,7 @@ human_vs_computer(Game):-
 % human vs computer mode
 computer_vs_computer(Game):-
 %        bot_test_board(Board),
+%        bot_win_test_board(Board),
         initial_board(Board),
         Game = [Board, [32, 32], redPlayer, cvc, noForceJump, 0, 0], !.
 
