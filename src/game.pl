@@ -1,8 +1,8 @@
 % human vs human mode
 hvh(Game):-
-        %        initial_board(Board),
+%                initial_board(Board),
         test_board(Board),
-        Game = [Board, [1, 2], redPlayer, hvh, noForceJump, 0, 0], !.
+        Game = [Board, [32, 32], redPlayer, hvh, noForceJump, 0, 0], !.
 
 % board procedures
 get_board([Board|_], Board).

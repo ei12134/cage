@@ -46,10 +46,10 @@ test_board([[empty,empty,empty,empty,empty,empty,empty,empty],
             [empty,empty,empty,empty,empty,empty,empty,empty],
             [empty,empty,empty,empty,empty,empty,empty,empty],
             [empty,empty,empty,blue,empty,empty,red,blue],
-            [empty,empty,empty,empty,empty,empty,empty,empty],
-            [empty,empty,empty,empty,empty,empty,empty,empty],
-            [empty,empty,empty,empty,empty,empty,empty,empty],
-            [empty,empty,empty,empty,empty,empty,empty,empty]
+            [red,empty,empty,empty,empty,empty,empty,empty],
+            [empty,empty,empty,empty,empty,empty,empty,blue],
+            [empty,empty,empty,empty,empty,empty,empty,red],
+            [empty,empty,empty,empty,blue,red,empty,empty]
            ]).
 
 % display board

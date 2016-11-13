@@ -149,11 +149,13 @@ validate_force_jump(JumpDestinyRow, JumpDestinyCol, Player, Board):-
 
            (DecRow >= 0, validate_force_jump_cell_contents(DecRow, JumpDestinyCol, Board, EnemyPiece),
             DecRow2 is DecRow - 1,
-            DecRow2 >= 0 -> (
-                               validate_force_jump_cell_contents(DecRow2, JumpDestinyCol, Board, empty),
-                               validate_ortogonal_adjancencies(DecRow2, JumpDestinyCol, PlayerPiece, Board)
-                            ); 
-            true
+            (
+               DecRow2 >= 0 -> (
+                                  validate_force_jump_cell_contents(DecRow2, JumpDestinyCol, Board, empty),
+                                  validate_ortogonal_adjancencies(DecRow2, JumpDestinyCol, PlayerPiece, Board)
+                               ); 
+               true
+            )
            );
 
            (IncCol =< 7, validate_force_jump_cell_contents(JumpDestinyRow, IncCol, Board, EnemyPiece),
