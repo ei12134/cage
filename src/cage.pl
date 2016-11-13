@@ -31,8 +31,22 @@ game_loop(Game):-
         game_loop(ModifiedGame).
 
 game_loop(Game):-
-        get_enemy_turn(Game, PreviousPlayer),
-        write('Game has ended - '), write(PreviousPlayer), write(' wins.'), nl.
+        get_board(Game, Board),
+        display_board(Board,8),
+        determine_winner(Game, Winner),
+        nl, write('Game has ended - '), write(Winner), write(' wins.'), nl.
+
+determine_winner(Game, Winner):-
+        get_previous_turn(Game, PreviousPlayer),
+        get_num_red_pieces(Game,NumRedPieces),
+        get_num_blue_pieces(Game,NumBluePieces),
+
+        (
+           NumRedPieces > 0 -> Winner = redPlayer;
+           NumBluePieces > 0 -> Winner = bluePlayer;
+           Winner = PreviousPlayer
+        ).
+
 
 human_play(Game, ModifiedGame):-
         get_player_turn(Game, Player),

@@ -45,12 +45,16 @@ make_jump(SrcRow, SrcCol, DestRow, DestCol, Game, ModifiedGame):-
         capture_piece(SrcRow, SrcCol, DestRow, DestCol, JumpDestinyRow, JumpDestinyCol, Game, TemporaryGame),
         get_board(TemporaryGame,ModifiedBoard), 
         (
+           JumpDestinyRow >= 0,
+           JumpDestinyRow =< 7,
+           JumpDestinyCol >= 0,
+           JumpDestinyCol =< 7,
            validate_force_jump(JumpDestinyRow, JumpDestinyCol, Player, ModifiedBoard),
            set_force_jump(forceJump, JumpDestinyRow, JumpDestinyCol, TemporaryGame, ModifiedGame),
-           write('Jumping move is now forced.'), nl, nl;
+           write('Jumping move will be forced next turn.'), nl, nl;
 
            set_force_jump(noForceJump, 0, 0, TemporaryGame, ModifiedGame),
-           write('Jumping move is not forced.'), nl, nl
+           write('Jumping move is not forced in the next turn.'), nl, nl
         ), !.
 
 capture_piece(SrcRow, SrcCol, DestRow, DestCol, JumpDestinyRow, JumpDestinyCol, Game, ModifiedGame):-

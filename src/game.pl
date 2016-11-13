@@ -55,12 +55,10 @@ dec_num_blue_pieces(Game, ModifiedGame):-
 get_player_turn(Game,Player):-
         get_list_element(2,Game,Player).
 
-get_enemy_turn(Game,EnemyPlayer):-
+get_previous_turn(Game,PreviousPlayer):-
         get_list_element(2,Game,Player),
-        (
-           Player == redPlayer, EnemyPlayer = bluePlayer;
-           EnemyPlayer = Player
-        ).
+        Player == redPlayer, PreviousPlayer = bluePlayer;
+        PreviousPlayer = redPlayer.
 
 
 set_player_turn(Player, Game, ModifiedGame):-
