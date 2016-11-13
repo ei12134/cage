@@ -36,7 +36,8 @@ game_loop(Game):-
            GameMode == hvc -> (
                                  (get_player_turn(Game, Player), Player \== redPlayer) -> computer_play(0, Game, ModifiedGame);
                                  human_play(Game, ModifiedGame)
-                              )
+                              );
+           human_play(Game, ModifiedGame)
         ),!,
           game_loop(ModifiedGame).
 

@@ -40,7 +40,7 @@ main_menu:-
 
 print_menu:-
         write('        Cage game'), nl, nl,
-        write('  [1] Human vs. Player'), nl,
+        write('  [1] Human vs. Human'), nl,
         write('  [2] Human vs. Computer'), nl,
         write('  [3] Computer vs. Computer'), nl, nl,
         write('Enter game mode number:'), nl.
