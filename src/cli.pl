@@ -1,9 +1,9 @@
 get_moving_piece_source_coordinates(SrcRow, SrcCol):-
-        write('Enter the row and column of the piece you want to move followed by <CR>: '), nl,
+        write('Enter the column and row (Ex: a1) of the piece to move followed by <CR>: '), nl,
         get_coordinates(SrcRow,SrcCol), nl.
 
 get_piece_destiny_coordinates(DstRow, DstCol):-
-        write('Enter the destiny row and column of the piece you want to move followed by <CR>:'), nl,
+        write('Enter the destiny column and row (Ex: a1) of the piece to move followed by <CR>:'), nl,
         get_coordinates(DstRow,DstCol), nl.
 
 get_integer(Input):-
