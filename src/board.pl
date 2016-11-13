@@ -45,11 +45,11 @@ initial_board([[blue,red,blue,red,blue,red,blue,red],
 test_board([[empty,empty,empty,empty,empty,empty,empty,empty],
             [empty,empty,empty,empty,empty,empty,empty,empty],
             [empty,empty,empty,empty,empty,empty,empty,empty],
-            [empty,empty,empty,blue,empty,empty,red,blue],
+            [empty,empty,empty,blue,empty,blue,empty,empty],
             [red,empty,empty,empty,empty,empty,empty,empty],
-            [empty,empty,empty,empty,empty,empty,empty,blue],
-            [empty,empty,empty,empty,empty,empty,empty,red],
-            [empty,empty,empty,empty,blue,red,empty,empty]
+            [empty,empty,empty,empty,blue,empty,empty,empty],
+            [empty,empty,empty,empty,empty,empty,empty,empty],
+            [empty,empty,empty,empty,empty,empty,empty,empty]
            ]).
 
 % display board

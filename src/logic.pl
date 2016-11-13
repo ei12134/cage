@@ -6,11 +6,25 @@
 %restriction_2(row,col,adj_row,adj_col,board).
 
 % not finished (last "invalid move" is not correct)
-make_move(SrcRow,SrcCol, DestRow, DestCol,Game, ModifiedGame):-
-        (       nl, write('Attempting to make a jump move...'), nl, make_jump(SrcRow,SrcCol, DestRow, DestCol, Game, TemporaryGame);
-                write('Failed to make a jump move!'), nl, nl, write('Attempting to make an adjoining move...'), nl, make_adjoining_move(SrcRow,SrcCol, DestRow, DestCol, Game, TemporaryGame);
-                write('Failed to make an adjoining move!'), nl, nl, write('Attempting to make a centering move...'), nl, make_centering_move(SrcRow,SrcCol, DestRow, DestCol, Game, TemporaryGame);
-                write('Failed to make a centering move!'), nl, fail
+make_move(SrcRow,SrcCol, DestRow, DestCol, Game, ModifiedGame):-
+        (       
+           nl, write('Attempting to make a jump move...'), nl,
+           make_jump(SrcRow,SrcCol, DestRow, DestCol, Game, TemporaryGame);
+
+           write('Failed to make a jump move!'), nl, nl,
+           write('Attempting to make an adjoining move...'), nl,
+           make_adjoining_move(SrcRow,SrcCol, DestRow, DestCol, Game, TemporaryGame);
+
+           write('Failed to make an adjoining move!'), nl, nl,
+           write('Attempting to make a centering move...'), nl,
+           make_centering_move(SrcRow,SrcCol, DestRow, DestCol, Game, TemporaryGame);
+
+           write('Failed to make a centering move!'), nl, nl,
+           get_board(Game, Board), get_player_turn(Game, Player),
+           check_move_availability(SrcRow, SrcCol, Player, Board), fail;
+
+           write('No valid moves were available -> Switching player turn!'), nl, nl,
+           change_player_turn(Game,ModifiedGame), true
         ),
         get_force_jump(TemporaryGame, ForceJumpMode),
         (
@@ -49,7 +63,7 @@ make_jump(SrcRow, SrcCol, DestRow, DestCol, Game, ModifiedGame):-
            JumpDestinyRow =< 7,
            JumpDestinyCol >= 0,
            JumpDestinyCol =< 7,
-           validate_force_jump(JumpDestinyRow, JumpDestinyCol, Player, ModifiedBoard),
+           validate_force_jump(DestRow, DestCol, JumpDestinyRow, JumpDestinyCol, Player, ModifiedBoard),
            set_force_jump(forceJump, JumpDestinyRow, JumpDestinyCol, TemporaryGame, ModifiedGame),
            write('Jumping move will be forced next turn.'), nl, nl;
 
@@ -97,9 +111,8 @@ get_jump_destiny_cell_coordinates(SrcRow, SrcCol, DestRow, DestCol, JumpType, Em
 
 validate_adjoining_move(SrcRow, SrcCol, DestRow, DestCol, Player, Board):-
         get_enemy_piece(Player,EnemyPiece),
-        validate_ortogonal_adjancencies(SrcRow, SrcCol, EnemyPiece, Board),
-        \+validate_ortogonal_adjancencies(DestRow, DestCol, EnemyPiece, Board), !.
-
+        validate_ortogonal_adjancencies(SrcRow, SrcCol, SrcRow, SrcCol, EnemyPiece, Board),!,
+        \+validate_ortogonal_adjancencies(SrcRow, SrcCol, DestRow, DestCol, EnemyPiece, Board), !.
 
 validate_jump(SrcRow, SrcCol, DestRow, DestCol, Player, Board, JumpDestinyRow, JumpDestinyCol):-
         % selected destiny cell must contain an opponent piece
@@ -117,10 +130,31 @@ validate_jump(SrcRow, SrcCol, DestRow, DestCol, Player, Board, JumpDestinyRow, J
         (
            (JumpDestinyRow >= 0, JumpDestinyRow =< 7, JumpDestinyCol >= 0, JumpDestinyCol =< 7) -> validate_cell_contents(JumpDestinyRow, JumpDestinyCol, Board, empty),
                                                                                                    piece_owned_by(Piece,Player),
-                                                                                                   validate_ortogonal_adjancencies(JumpDestinyRow, JumpDestinyCol, Piece, Board);
+                                                                                                   validate_ortogonal_adjancencies(DestRow, DestCol, JumpDestinyRow, JumpDestinyCol, Piece, Board);
            true
         ), !.
 
+validate_move(SrcRow, SrcCol, DestRow, DestCol, Player, Board):-
+        validate_jump(SrcRow, SrcCol, DestRow, DestCol, Player, Board, _, _);
+        validate_centering_move(SrcRow, SrcCol, DestRow, DestCol, Player, Board);
+        validate_adjoining_move(SrcRow, SrcCol, DestRow, DestCol, Player, Board),!.
+
+check_move_availability(SrcRow, SrcCol, Player, Board):-
+        % a move must be checked in all directions
+        IncRow is SrcRow + 1,
+        DecRow is SrcRow - 1,
+        IncCol is SrcCol + 1,
+        DecCol is SrcCol - 1,!,
+        (
+           IncRow =< 7, validate_move(SrcRow, SrcCol, IncRow, SrcCol, Player, Board);
+           DecRow >= 0, validate_move(SrcRow, SrcCol, DecRow, SrcCol, Player, Board);
+           IncCol =< 7, validate_move(SrcRow, SrcCol, SrcRow, IncCol, Player, Board);
+           DecCol >= 0, validate_move(SrcRow, SrcCol, SrcRow, DecCol, Player, Board);
+           DecRow >= 0, DecCol >= 0, validate_move(SrcRow, SrcCol, DecRow, DecCol, Player, Board);
+           IncRow =< 7, IncCol =< 7, validate_move(SrcRow, SrcCol, IncRow, IncCol, Player, Board);
+           DecRow >= 0, IncCol =< 7, validate_move(SrcRow, SrcCol, DecRow, IncCol, Player, Board);
+           IncRow =< 7, DecCol >= 0, validate_move(SrcRow, SrcCol, IncRow, DecCol, Player, Board)
+        ).
 
 get_jump_type(SrcRow, SrcCol, DestRow, DestCol, JumpType):-
         (
@@ -128,7 +162,7 @@ get_jump_type(SrcRow, SrcCol, DestRow, DestCol, JumpType):-
            SrcCol == DestCol -> JumpType = vertical
         ).
 
-validate_force_jump(JumpDestinyRow, JumpDestinyCol, Player, Board):-
+validate_force_jump(CapturedRow, CapturedCol, JumpDestinyRow, JumpDestinyCol, Player, Board):-
         piece_owned_by(PlayerPiece,Player),
         get_enemy_piece(Player,EnemyPiece),
         IncRow is JumpDestinyRow + 1,
@@ -141,7 +175,7 @@ validate_force_jump(JumpDestinyRow, JumpDestinyCol, Player, Board):-
             (
                IncRow2 =<7 ->(
                                 validate_force_jump_cell_contents(IncRow2, JumpDestinyCol, Board, empty),
-                                validate_ortogonal_adjancencies(IncRow2, JumpDestinyCol, PlayerPiece, Board)
+                                validate_ortogonal_adjancencies(CapturedRow, CapturedCol, IncRow2, JumpDestinyCol, PlayerPiece, Board)
                              );
                true
             )
@@ -152,7 +186,7 @@ validate_force_jump(JumpDestinyRow, JumpDestinyCol, Player, Board):-
             (
                DecRow2 >= 0 -> (
                                   validate_force_jump_cell_contents(DecRow2, JumpDestinyCol, Board, empty),
-                                  validate_ortogonal_adjancencies(DecRow2, JumpDestinyCol, PlayerPiece, Board)
+                                  validate_ortogonal_adjancencies(CapturedRow, CapturedCol, DecRow2, JumpDestinyCol, PlayerPiece, Board)
                                ); 
                true
             )
@@ -163,7 +197,7 @@ validate_force_jump(JumpDestinyRow, JumpDestinyCol, Player, Board):-
             (
                IncCol2 =< 7 -> (
                                   validate_force_jump_cell_contents(JumpDestinyRow, IncCol2, Board, empty),
-                                  validate_ortogonal_adjancencies(JumpDestinyRow, IncCol2, PlayerPiece, Board)
+                                  validate_ortogonal_adjancencies(CapturedRow, CapturedCol, JumpDestinyRow, IncCol2, PlayerPiece, Board)
                                );
                true
             )
@@ -174,19 +208,17 @@ validate_force_jump(JumpDestinyRow, JumpDestinyCol, Player, Board):-
             (
                DecCol2 >= 0 -> (
                                   validate_force_jump_cell_contents(JumpDestinyRow, DecCol2, Board, empty),
-                                  validate_ortogonal_adjancencies(JumpDestinyRow, DecCol2, PlayerPiece, Board)
+                                  validate_ortogonal_adjancencies(CapturedRow, CapturedCol, JumpDestinyRow, DecCol2, PlayerPiece, Board)
                                );
                true
             )
            )
         ).
 
-
-validate_not_centered(SrcRow,SrcCol):-
-        SrcRow \= 3, SrcCol \= 3;
-        SrcRow \= 4, SrcCol \= 4;
-        SrcRow \= 3, SrcCol \= 4;
-        SrcRow \= 4, SrcCol \= 3.
+validate_centered(SrcRow,SrcCol):-
+        SrcRow == 3 -> (SrcCol == 4; SrcCol == 3);
+        SrcRow == 4 -> (SrcCol == 4; SrcCol == 3);
+        fail.
 
 get_quadrant(SrcRow,SrcCol,Quadrant):-
         SrcRow >=0, SrcRow =< 3, SrcCol >= 0, SrcCol =< 3 -> Quadrant = 1;
@@ -195,9 +227,9 @@ get_quadrant(SrcRow,SrcCol,Quadrant):-
         SrcRow >=4, SrcRow =< 7, SrcCol >= 4, SrcCol =< 7 -> Quadrant = 4.
 
 validate_centering_move(SrcRow, SrcCol, DestRow, DestCol, Player, Board):-
-        validate_not_centered(SrcRow,SrcCol),
-        piece_owned_by(PlayerPiece, Player),
-        validate_ortogonal_adjancencies(DestRow, DestCol, PlayerPiece, Board),
+        \+ validate_centered(SrcRow,SrcCol), !, 
+        piece_owned_by(PlayerPiece, Player), !,
+        validate_ortogonal_adjancencies(SrcRow, SrcCol, DestRow, DestCol, PlayerPiece, Board),
         get_quadrant(SrcRow,SrcCol,Quadrant),
         DeltaRow is DestRow - SrcRow,
         DeltaCol is DestCol - SrcCol,
@@ -208,10 +240,10 @@ validate_centering_move(SrcRow, SrcCol, DestRow, DestCol, Player, Board):-
                             );
            Quadrant == 2 -> (
                                DeltaRow > 0, DeltaCol =< 0;
-                               DeltaCol < 0, DeltaRow =< 0
+                               DeltaCol < 0, DeltaRow >= 0
                             );
            Quadrant == 3 -> (
-                               DeltaRow < 0, DeltaCol =< 0;
+                               DeltaRow < 0, DeltaCol >= 0;
                                DeltaCol > 0, DeltaRow =< 0
                             );
            Quadrant == 4 -> (
@@ -220,17 +252,29 @@ validate_centering_move(SrcRow, SrcCol, DestRow, DestCol, Player, Board):-
                             )
         ),!.
 
-validate_ortogonal_adjancencies(DestRow, DestCol, AvoidPiece, Board):-   
+validate_ortogonal_adjancencies(SrcRow, SrcCol, DestRow, DestCol, AvoidPiece, Board):-   
         IncRow is DestRow + 1,
         DecRow is DestRow - 1,
         IncCol is DestCol + 1,
-        DecCol is DestCol - 1,
-        validate_ortogonal_cell_contents(IncRow, DestCol, Board, AvoidPiece),!,
-        validate_ortogonal_cell_contents(DecRow, DestCol, Board, AvoidPiece),!,
-        validate_ortogonal_cell_contents(DestRow, IncCol, Board, AvoidPiece),!,
-        validate_ortogonal_cell_contents(DestRow, DecCol, Board, AvoidPiece),!.
+        DecCol is DestCol - 1, !,
+        (       
+           SrcRow \= IncRow -> (validate_ortogonal_cell_contents(IncRow, DestCol, Board, AvoidPiece),!);
+           true
+        ),
+        (       
+           SrcRow \= DecRow -> ( validate_ortogonal_cell_contents(DecRow, DestCol, Board, AvoidPiece),!);
+           true
+        ),
+        (       
+           SrcCol \= IncCol -> (validate_ortogonal_cell_contents(DestRow, IncCol, Board, AvoidPiece),!);
+           true
+        ),
+        (       
+           SrcCol \= DecCol -> (validate_ortogonal_cell_contents(DestRow, DecCol, Board, AvoidPiece),!);
+           true
+        ),!.
 
-validate_ortogonal_adjancencies(_, _, _, _):-
+validate_ortogonal_adjancencies(_, _, _, _, _, _):-
         write('Destiny cell with bad ortogonal adjacency!'), nl,
         fail.
 
@@ -245,8 +289,8 @@ validate_source_to_destiny_delta(_, _, _, _):-
 
 validate_ortogonal_cell_contents(Row, Col, Board, ExpectedContent):-
         (
-           (Row >= 0, Row =< 7, Col >= 0, Col =< 7) ->  get_matrix_element(Row, Col, Board, Piece),
-                                                        Piece \= ExpectedContent, !;
+           (Row >= 0, Row =< 7, Col >= 0, Col =< 7) -> (get_matrix_element(Row, Col, Board, Piece),
+                                                        Piece \= ExpectedContent, !);
            true
         ), !.
 

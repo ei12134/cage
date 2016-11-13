@@ -7,7 +7,7 @@
 :- include('board.pl').
 :- include('logic.pl').
 
-% program starting point
+% program starting pointc
 cage:- main_menu.
 
 % players and pieces
