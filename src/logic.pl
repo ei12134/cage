@@ -21,7 +21,7 @@ make_move(SrcRow,SrcCol, DestRow, DestCol, Game, ModifiedGame):-
 
            write('Failed to make a centering move!'), nl, nl,
            get_board(Game, Board), get_player_turn(Game, Player),
-           check_move_availability(SrcRow, SrcCol, Player, Board), fail;
+           check_move_availability(SrcRow, SrcCol, Player, Board), ModifiedGame = Game;
 
            write('No valid moves were available -> Switching player turn!'), nl, nl,
            change_player_turn(Game,ModifiedGame), true
@@ -29,7 +29,8 @@ make_move(SrcRow,SrcCol, DestRow, DestCol, Game, ModifiedGame):-
         get_force_jump(TemporaryGame, ForceJumpMode),
         (
            ForceJumpMode == noForceJump -> change_player_turn(TemporaryGame,ModifiedGame),! ;
-           ModifiedGame = TemporaryGame
+           ModifiedGame = TemporaryGame;
+           true
         ).
 
 
@@ -136,8 +137,8 @@ validate_jump(SrcRow, SrcCol, DestRow, DestCol, Player, Board, JumpDestinyRow, J
 
 validate_move(SrcRow, SrcCol, DestRow, DestCol, Player, Board):-
         validate_jump(SrcRow, SrcCol, DestRow, DestCol, Player, Board, _, _);
-        validate_centering_move(SrcRow, SrcCol, DestRow, DestCol, Player, Board);
-        validate_adjoining_move(SrcRow, SrcCol, DestRow, DestCol, Player, Board),!.
+        validate_adjoining_move(SrcRow, SrcCol, DestRow, DestCol, Player, Board);
+        validate_centering_move(SrcRow, SrcCol, DestRow, DestCol, Player, Board),!.
 
 check_move_availability(SrcRow, SrcCol, Player, Board):-
         % a move must be checked in all directions
@@ -146,14 +147,14 @@ check_move_availability(SrcRow, SrcCol, Player, Board):-
         IncCol is SrcCol + 1,
         DecCol is SrcCol - 1,!,
         (
-           IncRow =< 7, validate_move(SrcRow, SrcCol, IncRow, SrcCol, Player, Board);
-           DecRow >= 0, validate_move(SrcRow, SrcCol, DecRow, SrcCol, Player, Board);
-           IncCol =< 7, validate_move(SrcRow, SrcCol, SrcRow, IncCol, Player, Board);
-           DecCol >= 0, validate_move(SrcRow, SrcCol, SrcRow, DecCol, Player, Board);
-           DecRow >= 0, DecCol >= 0, validate_move(SrcRow, SrcCol, DecRow, DecCol, Player, Board);
-           IncRow =< 7, IncCol =< 7, validate_move(SrcRow, SrcCol, IncRow, IncCol, Player, Board);
-           DecRow >= 0, IncCol =< 7, validate_move(SrcRow, SrcCol, DecRow, IncCol, Player, Board);
-           IncRow =< 7, DecCol >= 0, validate_move(SrcRow, SrcCol, IncRow, DecCol, Player, Board)
+           (IncRow =< 7, validate_move(SrcRow, SrcCol, IncRow, SrcCol, Player, Board),!);
+           (DecRow >= 0, validate_move(SrcRow, SrcCol, DecRow, SrcCol, Player, Board),!);
+           (IncCol =< 7, validate_move(SrcRow, SrcCol, SrcRow, IncCol, Player, Board),!);
+           (DecCol >= 0, validate_move(SrcRow, SrcCol, SrcRow, DecCol, Player, Board));
+           (DecRow >= 0, DecCol >= 0, validate_move(SrcRow, SrcCol, DecRow, DecCol, Player, Board),!);
+           (IncRow =< 7, IncCol =< 7, validate_move(SrcRow, SrcCol, IncRow, IncCol, Player, Board),!);
+           (DecRow >= 0, IncCol =< 7, validate_move(SrcRow, SrcCol, DecRow, IncCol, Player, Board),!);
+           (IncRow =< 7, DecCol >= 0, validate_move(SrcRow, SrcCol, IncRow, DecCol, Player, Board),!)
         ).
 
 get_jump_type(SrcRow, SrcCol, DestRow, DestCol, JumpType):-

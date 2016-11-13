@@ -1,5 +1,5 @@
 % human vs human mode
-hvh(Game):-
+human_vs_human(Game):-
         %                initial_board(Board),
         jump_test_board(Board),
         Game = [Board, [1, 4], redPlayer, hvh, noForceJump, 0, 0], !.

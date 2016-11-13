@@ -30,7 +30,7 @@ validate_board_pieces(Game):-
         NumRedPieces > 0,
         NumBluePieces > 0,!.
 
-% container
+% container | 32 red | 32 blue |
 initial_board([[blue,red,blue,red,blue,red,blue,red],
                [red,blue,red,blue,red,blue,red,blue],
                [blue,red,blue,red,blue,red,blue,red],
@@ -41,7 +41,7 @@ initial_board([[blue,red,blue,red,blue,red,blue,red],
                [red,blue,red,blue,red,blue,red,blue]
               ]).
 
-% empty board
+% empty board | 0 red | 0 blue |
 empty_board([[empty,empty,empty,empty,empty,empty,empty,empty],
              [empty,empty,empty,empty,empty,empty,empty,empty],
              [empty,empty,empty,empty,empty,empty,empty,empty],
@@ -52,7 +52,7 @@ empty_board([[empty,empty,empty,empty,empty,empty,empty,empty],
              [empty,empty,empty,empty,empty,empty,empty,empty]
             ]).
 
-% test board
+% test board | 1 red | 4 blue |
 jump_test_board([[empty,empty,empty,empty,empty,empty,empty,empty],
                  [empty,empty,empty,empty,empty,empty,empty,empty],
                  [empty,empty,empty,empty,empty,empty,empty,empty],

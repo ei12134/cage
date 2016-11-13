@@ -32,9 +32,9 @@ main_menu:-
         get_char(Input),
         get_char(_),
         (
-           Input == '1' -> hvh(Game), game_loop(Game);
-           %           Char = '2' -> hvc(Game), start(Game);
-           %           Char = '3' -> cvc(Game), start(Game);
+           Input == '1' -> human_vs_human(Game), game_loop(Game);
+           %           Input == '2' -> human_vs_computer(Game), game_loop(Game);
+           %           Input == '3' -> computer_vs_computer(Game), game_loop(Game);
            main_menu
         ).
 
