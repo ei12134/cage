@@ -4,6 +4,7 @@
 :- include('utils.pl').
 :- include('cli.pl').
 :- include('game.pl').
+:- include('computer.pl').
 :- include('board.pl').
 :- include('logic.pl').
 
@@ -53,7 +54,7 @@ human_play(Game, ModifiedGame):-
         get_board(Game, Board),
 
         repeat,
-        display_turn_info(Player), nl,
+        display_turn_info(Game), nl,
         get_moving_piece_source_coordinates(SrcRow, SrcCol), 
         validate_piece_owner(SrcRow, SrcCol, Board, Player),
 

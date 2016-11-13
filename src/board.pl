@@ -41,16 +41,27 @@ initial_board([[blue,red,blue,red,blue,red,blue,red],
                [red,blue,red,blue,red,blue,red,blue]
               ]).
 
+% empty board
+empty_board([[empty,empty,empty,empty,empty,empty,empty,empty],
+             [empty,empty,empty,empty,empty,empty,empty,empty],
+             [empty,empty,empty,empty,empty,empty,empty,empty],
+             [empty,empty,empty,empty,empty,empty,empty,empty],
+             [empty,empty,empty,empty,empty,empty,empty,empty],
+             [empty,empty,empty,empty,empty,empty,empty,empty],
+             [empty,empty,empty,empty,empty,empty,empty,empty],
+             [empty,empty,empty,empty,empty,empty,empty,empty]
+            ]).
+
 % test board
-test_board([[empty,empty,empty,empty,empty,empty,empty,empty],
-            [empty,empty,empty,empty,empty,empty,empty,empty],
-            [empty,empty,empty,empty,empty,empty,empty,empty],
-            [empty,empty,empty,blue,empty,blue,empty,empty],
-            [red,empty,empty,empty,empty,empty,empty,empty],
-            [empty,empty,empty,empty,blue,empty,empty,empty],
-            [empty,empty,empty,empty,empty,empty,empty,empty],
-            [empty,empty,empty,empty,empty,empty,empty,empty]
-           ]).
+jump_test_board([[empty,empty,empty,empty,empty,empty,empty,empty],
+                 [empty,empty,empty,empty,empty,empty,empty,empty],
+                 [empty,empty,empty,empty,empty,empty,empty,empty],
+                 [empty,empty,empty,blue,empty,blue,empty,empty],
+                 [empty,empty,blue,empty,blue,empty,empty,empty],
+                 [empty,empty,red,empty,empty,empty,empty,empty],
+                 [empty,empty,empty,empty,empty,empty,empty,empty],
+                 [empty,empty,empty,empty,empty,empty,empty,empty]
+                ]).
 
 % display board
 display_board([H|T], R) :- 

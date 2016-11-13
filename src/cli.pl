@@ -20,9 +20,12 @@ get_coordinates(Row,Col):-
         Row is 8-R,
         Col is C-49.
 
-display_turn_info(Player):-
+display_turn_info(Game):-
+        get_player_turn(Game, Player),
         get_player_name(Player, PlayerName),
-        write('\n'), write(PlayerName), write(' player\'s turn to play.'), !.
+        get_evaluation(Game, Player, Evaluation),
+        nl, write(PlayerName), write(' game evaluation: '), write(Evaluation), nl,
+        write(PlayerName), write(' player\'s turn to play.'), !.
 
 main_menu:-
         print_menu,

@@ -1,14 +1,23 @@
 % human vs human mode
 hvh(Game):-
-%                initial_board(Board),
-        test_board(Board),
-        Game = [Board, [32, 32], redPlayer, hvh, noForceJump, 0, 0], !.
+        %                initial_board(Board),
+        jump_test_board(Board),
+        Game = [Board, [1, 4], redPlayer, hvh, noForceJump, 0, 0], !.
 
 % board procedures
 get_board([Board|_], Board).
 
 set_board(Board, Game, ModifiedGame):-
         set_list_element(0, Board, Game, ModifiedGame).
+
+% board evaluation
+get_evaluation(Game,Player,Evaluation):-
+        get_num_red_pieces(Game, NumRedPieces),
+        get_num_blue_pieces(Game, NumBluePieces),
+        (
+           Player == redPlayer -> Evaluation is NumRedPieces - NumBluePieces;
+           Player == bluePlayer -> Evaluation is NumBluePieces - NumRedPieces
+        ),!.
 
 % pieces procedures
 get_num_board_pieces(Game,ListOfPieces):-
