@@ -9,7 +9,9 @@
 :- include('logic.pl').
 
 % program starting pointc
-cage:- main_menu.
+cage:- 
+        initialize_random_seed,
+        main_menu.
 
 % players and pieces
 player(redPlayer).
@@ -28,7 +30,28 @@ game_loop(Game):-
         validate_board_pieces(Game),
         get_board(Game, Board),
         display_board(Board,8),
-        human_play(Game, ModifiedGame),
+        get_mode(Game, Mode),
+        (
+           Mode == cvc -> computer_play(0,Game,ModifiedGame), !;
+
+           (
+              human_play(Game, HumanPlayedGame),
+              % human vs human
+              get_board(HumanPlayedGame, HumanPlayedBoard),
+              display_board(HumanPlayedBoard,8),
+
+              Mode == hvh ->  human_play(Game, ModifiedGame), !;
+
+              % human vs computer
+              get_player_turn(HumanPlayedGame, Player),
+              get_force_jump(HumanPlayedGame,ForceMode),
+              (
+                 ForceMode == noForceJump -> computer_play(0,HumanPlayedGame, ModifiedGame);
+                 (ForceMode == forceJump, Player == bluePlayer) -> computer_play(0,HumanPlayedGame, ModifiedGame);
+                 ModifiedGame = HumanPlayedGame
+              )
+           )
+        ),
         game_loop(ModifiedGame).
 
 game_loop(Game):-

@@ -25,3 +25,8 @@ set_list_element(I, Elem, [H|L], [H|ResL]):-
         I > 0,
         I1 is I-1,
         set_list_element(I1, Elem, L, ResL).
+
+initialize_random_seed:-
+        now(Usec), Seed is Usec mod 30269,
+        getrand(random(X, Y, Z, _)),
+        setrand(random(Seed, X, Y, Z)), !.

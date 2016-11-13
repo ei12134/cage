@@ -1,11 +1,4 @@
-% moves
-%centering_move(row,col,dest_row,dest_col,board).
-%adjoining_mode(row,col,dest_row,dest_col,board).
-%jump(row,col,dest_row,dest_col,board).
-%restriction_1(row,col,adj_row,adj_col,boad).
-%restriction_2(row,col,adj_row,adj_col,board).
-
-% not finished (last "invalid move" is not correct)
+% attempt to make a move
 make_move(SrcRow,SrcCol, DestRow, DestCol, Game, ModifiedGame):-
         (       
            nl, write('Attempting to make a jump move...'), nl,
@@ -21,7 +14,7 @@ make_move(SrcRow,SrcCol, DestRow, DestCol, Game, ModifiedGame):-
 
            write('Failed to make a centering move!'), nl, nl,
            get_board(Game, Board), get_player_turn(Game, Player),
-           check_move_availability(SrcRow, SrcCol, Player, Board), ModifiedGame = Game;
+           check_move_availability(SrcRow, SrcCol, Player, Board, _, _), ModifiedGame = Game;
 
            write('No valid moves were available -> Switching player turn!'), nl, nl,
            change_player_turn(Game,ModifiedGame), true
@@ -29,10 +22,8 @@ make_move(SrcRow,SrcCol, DestRow, DestCol, Game, ModifiedGame):-
         get_force_jump(TemporaryGame, ForceJumpMode),
         (
            ForceJumpMode == noForceJump -> change_player_turn(TemporaryGame,ModifiedGame),! ;
-           ModifiedGame = TemporaryGame;
-           true
+           ModifiedGame = TemporaryGame
         ).
-
 
 move_piece(SrcRow, SrcCol, DestRow, DestCol, Board, ModifiedBoard):-
         get_matrix_element(SrcRow,SrcCol,Board,SrcElem),
@@ -140,22 +131,22 @@ validate_move(SrcRow, SrcCol, DestRow, DestCol, Player, Board):-
         validate_adjoining_move(SrcRow, SrcCol, DestRow, DestCol, Player, Board);
         validate_centering_move(SrcRow, SrcCol, DestRow, DestCol, Player, Board),!.
 
-check_move_availability(SrcRow, SrcCol, Player, Board):-
+check_move_availability(SrcRow, SrcCol, Player, Board, DestRow, DestCol):-
         % a move must be checked in all directions
         IncRow is SrcRow + 1,
         DecRow is SrcRow - 1,
         IncCol is SrcCol + 1,
-        DecCol is SrcCol - 1,!,
+        DecCol is SrcCol - 1,
         (
-           (IncRow =< 7, validate_move(SrcRow, SrcCol, IncRow, SrcCol, Player, Board),!);
-           (DecRow >= 0, validate_move(SrcRow, SrcCol, DecRow, SrcCol, Player, Board),!);
-           (IncCol =< 7, validate_move(SrcRow, SrcCol, SrcRow, IncCol, Player, Board),!);
-           (DecCol >= 0, validate_move(SrcRow, SrcCol, SrcRow, DecCol, Player, Board));
-           (DecRow >= 0, DecCol >= 0, validate_move(SrcRow, SrcCol, DecRow, DecCol, Player, Board),!);
-           (IncRow =< 7, IncCol =< 7, validate_move(SrcRow, SrcCol, IncRow, IncCol, Player, Board),!);
-           (DecRow >= 0, IncCol =< 7, validate_move(SrcRow, SrcCol, DecRow, IncCol, Player, Board),!);
-           (IncRow =< 7, DecCol >= 0, validate_move(SrcRow, SrcCol, IncRow, DecCol, Player, Board),!)
-        ).
+           IncRow =< 7, validate_move(SrcRow, SrcCol, IncRow, SrcCol, Player, Board), DestRow = IncRow, DestCol = SrcCol;
+           DecRow >= 0, validate_move(SrcRow, SrcCol, DecRow, SrcCol, Player, Board), DestRow = DecRow, DestCol = SrcCol;
+           IncCol =< 7, validate_move(SrcRow, SrcCol, SrcRow, IncCol, Player, Board), DestRow = SrcRow, DestCol = IncCol;
+           DecCol >= 0, validate_move(SrcRow, SrcCol, SrcRow, DecCol, Player, Board), DestRow = SrcRow, DestCol = DecCol;
+           DecRow >= 0, DecCol >= 0, validate_move(SrcRow, SrcCol, DecRow, DecCol, Player, Board), DestRow = DecRow, DestCol = DecCol;
+           IncRow =< 7, IncCol =< 7, validate_move(SrcRow, SrcCol, IncRow, IncCol, Player, Board), DestRow = IncRow, DestCol = IncCol;
+           DecRow >= 0, IncCol =< 7, validate_move(SrcRow, SrcCol, DecRow, IncCol, Player, Board), DestRow = DecRow, DestCol = IncCol;
+           IncRow =< 7, DecCol >= 0, validate_move(SrcRow, SrcCol, IncRow, DecCol, Player, Board), DestRow = IncRow, DestCol = DecCol
+        ), !.
 
 get_jump_type(SrcRow, SrcCol, DestRow, DestCol, JumpType):-
         (
@@ -232,6 +223,8 @@ validate_centering_move(SrcRow, SrcCol, DestRow, DestCol, Player, Board):-
         piece_owned_by(PlayerPiece, Player), !,
         validate_ortogonal_adjancencies(SrcRow, SrcCol, DestRow, DestCol, PlayerPiece, Board),
         get_quadrant(SrcRow,SrcCol,Quadrant),
+        DestRow >= 0, DestRow =< 7,
+        DestCol >= 0, DestCol =< 7,
         DeltaRow is DestRow - SrcRow,
         DeltaCol is DestCol - SrcCol,
         (
@@ -259,19 +252,19 @@ validate_ortogonal_adjancencies(SrcRow, SrcCol, DestRow, DestCol, AvoidPiece, Bo
         IncCol is DestCol + 1,
         DecCol is DestCol - 1, !,
         (       
-           SrcRow \= IncRow -> (validate_ortogonal_cell_contents(IncRow, DestCol, Board, AvoidPiece),!);
+           SrcRow \== IncRow -> (validate_ortogonal_cell_contents(IncRow, DestCol, Board, AvoidPiece),!);
            true
         ),
         (       
-           SrcRow \= DecRow -> ( validate_ortogonal_cell_contents(DecRow, DestCol, Board, AvoidPiece),!);
+           SrcRow \== DecRow -> ( validate_ortogonal_cell_contents(DecRow, DestCol, Board, AvoidPiece),!);
            true
         ),
         (       
-           SrcCol \= IncCol -> (validate_ortogonal_cell_contents(DestRow, IncCol, Board, AvoidPiece),!);
+           SrcCol \== IncCol -> (validate_ortogonal_cell_contents(DestRow, IncCol, Board, AvoidPiece),!);
            true
         ),
         (       
-           SrcCol \= DecCol -> (validate_ortogonal_cell_contents(DestRow, DecCol, Board, AvoidPiece),!);
+           SrcCol \== DecCol -> (validate_ortogonal_cell_contents(DestRow, DecCol, Board, AvoidPiece),!);
            true
         ),!.
 

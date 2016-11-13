@@ -63,6 +63,16 @@ jump_test_board([[empty,empty,empty,empty,empty,empty,empty,empty],
                  [empty,empty,empty,empty,empty,empty,empty,empty]
                 ]).
 
+bot_test_board([[blue,red,blue,red,blue,red,blue,red],
+                [red,blue,red,blue,red,blue,red,blue],
+                [blue,red,blue,red,blue,red,empty,empty],
+                [red,blue,red,blue,red,blue,red,blue],
+                [blue,red,blue,red,blue,red,blue,red],
+                [red,blue,red,blue,red,blue,red,blue],
+                [blue,red,blue,empty,blue,red,blue,red],
+                [red,blue,red,empty,red,blue,red,blue]
+               ]).
+
 % display board
 display_board([H|T], R) :- 
         % how to display 1st line border?

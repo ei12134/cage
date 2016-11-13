@@ -1,8 +1,19 @@
 % human vs human mode
 human_vs_human(Game):-
         %                initial_board(Board),
-        jump_test_board(Board),
-        Game = [Board, [1, 4], redPlayer, hvh, noForceJump, 0, 0], !.
+        initial_board(Board),
+        Game = [Board, [32, 32], redPlayer, hvh, noForceJump, 0, 0], !.
+
+% human vs computer mode
+human_vs_computer(Game):-
+        initial_board(Board),
+        Game = [Board, [32, 32], redPlayer, hvc, noForceJump, 0, 0], !.
+
+% human vs computer mode
+computer_vs_computer(Game):-
+%        bot_test_board(Board),
+        initial_board(Board),
+        Game = [Board, [32, 32], redPlayer, cvc, noForceJump, 0, 0], !.
 
 % board procedures
 get_board([Board|_], Board).
@@ -86,6 +97,10 @@ get_enemy_piece(Player, EnemyPiece):-
            PlayerPiece == red -> EnemyPiece = blue;
            PlayerPiece == blue -> EnemyPiece = red
         ).
+
+% game mode
+get_mode(Game,Mode):-
+        get_list_element(3,Game,Mode).
 
 % jump forcing variable
 get_force_jump(Game,ForceMode):-

@@ -33,14 +33,14 @@ main_menu:-
         get_char(_),
         (
            Input == '1' -> human_vs_human(Game), game_loop(Game);
-           %           Input == '2' -> human_vs_computer(Game), game_loop(Game);
-           %           Input == '3' -> computer_vs_computer(Game), game_loop(Game);
+           Input == '2' -> human_vs_computer(Game), game_loop(Game);
+           Input == '3' -> computer_vs_computer(Game), game_loop(Game);
            main_menu
         ).
 
 print_menu:-
         write('        Cage game'), nl, nl,
-        write('  [1] Player vs. Player'), nl,
-        write('  [2] Player vs. Computer'), nl,
+        write('  [1] Human vs. Player'), nl,
+        write('  [2] Human vs. Computer'), nl,
         write('  [3] Computer vs. Computer'), nl, nl,
         write('Enter game mode number:'), nl.
