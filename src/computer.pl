@@ -5,8 +5,9 @@ validate_force_jump(DestRow, DestCol, Game):-
         (       ForceMode == forceJump -> write('A jumping move is mandatory'), nl,
                                           get_enemy_piece(Player, EnemyPiece),
                                           validate_cell_contents(DestRow, DestCol, Board, EnemyPiece);
-                ForceMode == noForceJump
-        ), !.
+                ForceMode == noForceJump;
+                fail
+        ),!.
 
 computer_play(0, Game, ModifiedGame):-     
         get_player_turn(Game, Player),
@@ -23,7 +24,7 @@ computer_play(0, Game, ModifiedGame):-
            BoardPiece == BotPiece
         ),
 
-        check_move_availability(StartRandRow, StartRandCol, Player, Board),
+        check_move_availability(StartRandRow, StartRandCol, Player, Board), !,
 
         IncRow is StartRandRow + 1,
         DecRow is StartRandRow - 1,
@@ -39,5 +40,6 @@ computer_play(0, Game, ModifiedGame):-
            (RandomMove =:= 4, validate_force_jump(IncRow,IncCol,Game), validate_move(StartRandRow, StartRandCol, IncRow, IncCol, Player, Board, DestRow, DestCol));
            (RandomMove =:= 5, validate_force_jump(DecRow,DecCol,Game), validate_move(StartRandRow, StartRandCol, DecRow, DecCol, Player, Board, DestRow, DestCol));
            (RandomMove =:= 6, validate_force_jump(DecRow,IncCol,Game), validate_move(StartRandRow, StartRandCol, DecRow, IncCol, Player, Board, DestRow, DestCol));
-           (RandomMove =:= 7, validate_force_jump(IncRow,DecCol,Game), validate_move(StartRandRow, StartRandCol, IncRow, DecCol, Player, Board, DestRow, DestCol))
+           (RandomMove =:= 7, validate_force_jump(IncRow,DecCol,Game), validate_move(StartRandRow, StartRandCol, IncRow, DecCol, Player, Board, DestRow, DestCol));
+           fail
         ), make_move(StartRandRow, StartRandCol, DestRow, DestCol, Game, ModifiedGame), !.

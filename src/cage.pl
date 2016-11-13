@@ -37,8 +37,8 @@ game_loop(Game):-
                                  (get_player_turn(Game, Player), Player \== redPlayer) -> computer_play(0, Game, ModifiedGame);
                                  human_play(Game, ModifiedGame)
                               )
-        ),
-        game_loop(ModifiedGame).
+        ),!,
+          game_loop(ModifiedGame).
 
 game_loop(Game):-
         get_board(Game, Board),
